@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 190">
+  <filter id="r"><feTurbulence type="fractalNoise" baseFrequency=".052" numOctaves="4" seed="27"/><feDisplacementMap in="SourceGraphic" scale="2.5"/></filter>
+  <g filter="url(#r)" fill="none" stroke="#2f9b7d" opacity=".84">
+    <path d="M24 25h282l-12 140H37z" stroke-width="6"/>
+    <path d="M43 42h242l-9 105H55z" stroke-width="2" stroke-dasharray="10 8"/>
+  </g>
+  <g fill="#2f9b7d" font-family="Courier New, monospace" text-anchor="middle" opacity=".88">
+    <text x="165" y="62" font-size="19" font-weight="700">MALDIVES IMMIGRATION</text>
+    <text x="165" y="105" font-size="44" font-weight="900">MLE</text>
+    <text x="165" y="134" font-size="18">VELANA AIRPORT</text>
+    <text x="165" y="160" font-size="16">22 APR 2026 · ARRIVAL</text>
+  </g>
+  <path d="M39 74c70-18 138-18 204 0M82 151c45-11 91-9 139 5" stroke="#f1e7d1" stroke-width="9" opacity=".26"/>
+</svg>

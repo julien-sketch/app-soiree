@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 190">
+  <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="4" seed="4"/><feDisplacementMap in="SourceGraphic" scale="2.4"/></filter>
+  <g filter="url(#rough)" fill="none" stroke="#1f4f93" stroke-width="6" opacity=".9">
+    <path d="M20 25h320v140H20z"/>
+    <path d="M34 39h292v112H34z" stroke-dasharray="12 9" stroke-width="3"/>
+    <path d="M54 102h84M229 102h72M70 133h220" stroke-width="3" opacity=".75"/>
+  </g>
+  <g fill="#1f4f93" font-family="Courier New, monospace" text-anchor="middle" opacity=".92">
+    <text x="180" y="52" font-size="20" font-weight="700">RÉPUBLIQUE FRANÇAISE</text>
+    <text x="180" y="78" font-size="16" font-weight="700">AÉROPORT CHARLES DE GAULLE</text>
+    <text x="180" y="119" font-size="44" font-weight="900">CDG</text>
+    <text x="180" y="152" font-size="26" font-weight="900">ENTRÉE</text>
+    <text x="70" y="116" font-size="32">✈</text>
+    <text x="292" y="119" font-size="26">→</text>
+  </g>
+  <g opacity=".28" stroke="#f1e7d1" stroke-width="9">
+    <path d="M33 31c58 18 117 18 176 1M242 44c29 6 57 5 85-2M40 154c70-15 136-12 198 9"/>
+  </g>
+</svg>

@@ -1,0 +1,3081 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #1a120d;
+  color: #181714;
+  font-family: Inter, Montserrat, Arial, sans-serif;
+}
+
+button {
+  font: inherit;
+}
+
+body {
+  overflow: hidden;
+}
+
+.scene {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(18px, 3vw, 42px);
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 15%, rgba(133, 92, 55, .32), transparent 31%),
+    radial-gradient(circle at 20% 100%, rgba(64, 42, 29, .52), transparent 36%),
+    linear-gradient(135deg, #24160f 0%, #1a120d 44%, #090705 100%);
+}
+
+.scene::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: .18;
+  background-image:
+    linear-gradient(115deg, transparent 0 22%, rgba(255, 214, 147, .16) 43%, transparent 62%),
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, .12) 0 1px, transparent 1px);
+  background-size: auto, 4px 4px;
+  pointer-events: none;
+}
+
+.deskGlow {
+  position: absolute;
+  width: min(92vw, 1400px);
+  aspect-ratio: 16 / 7;
+  bottom: 6vh;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, .62), transparent 66%);
+  filter: blur(18px);
+}
+
+.passportShell {
+  width: min(90vw, 1500px);
+  aspect-ratio: 16 / 9;
+  max-height: 90vh;
+  position: relative;
+  filter: drop-shadow(0 38px 55px rgba(0, 0, 0, .72));
+  transform: translateZ(0);
+}
+
+.passportShell.impact {
+  animation: passportImpact .42s ease-out;
+}
+
+.passportShadow {
+  position: absolute;
+  inset: 5% 2% -3%;
+  border-radius: 44px;
+  background: rgba(0, 0, 0, .38);
+  filter: blur(28px);
+}
+
+.spread {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  perspective: 2200px;
+  transform-style: preserve-3d;
+}
+
+.passportPage {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: clamp(24px, 3.2vw, 54px);
+  background-color: #f5edda;
+  background-image:
+    radial-gradient(circle at 20% 12%, rgba(255, 255, 255, .58), transparent 25%),
+    radial-gradient(circle at 82% 76%, rgba(100, 72, 39, .1), transparent 35%),
+    repeating-linear-gradient(0deg, rgba(78, 54, 31, .035) 0 1px, transparent 1px 18px),
+    repeating-linear-gradient(90deg, rgba(78, 54, 31, .027) 0 1px, transparent 1px 22px),
+    linear-gradient(115deg, rgba(133, 99, 53, .08), transparent 38%, rgba(255, 255, 255, .12));
+  border: 1px solid rgba(76, 54, 34, .52);
+  box-shadow:
+    inset 0 0 80px rgba(91, 66, 36, .13),
+    inset 0 0 0 1px rgba(255, 255, 255, .34);
+}
+
+.passportPage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: .32;
+  background:
+    radial-gradient(circle at 18% 24%, rgba(73, 50, 29, .13) 0 1px, transparent 1px),
+    radial-gradient(circle at 70% 36%, rgba(73, 50, 29, .12) 0 1px, transparent 1px),
+    linear-gradient(45deg, transparent 48%, rgba(49, 91, 125, .06) 49% 51%, transparent 52%);
+  background-size: 7px 7px, 11px 11px, 42px 42px;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.passportPage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 100% 50%, rgba(47, 31, 18, .24), transparent 15%),
+    linear-gradient(90deg, rgba(58, 38, 22, .16), transparent 13%),
+    linear-gradient(180deg, rgba(255, 255, 255, .24), transparent 40%, rgba(74, 48, 29, .06));
+  pointer-events: none;
+}
+
+.leftPage {
+  border-radius: 28px 7px 7px 28px;
+}
+
+.rightPage {
+  border-radius: 7px 28px 28px 7px;
+}
+
+.rightPage::after {
+  background:
+    radial-gradient(circle at 0 50%, rgba(47, 31, 18, .22), transparent 15%),
+    linear-gradient(270deg, rgba(255, 255, 255, .2), transparent 50%),
+    linear-gradient(180deg, rgba(255, 255, 255, .12), transparent 42%, rgba(74, 48, 29, .08));
+}
+
+.binding {
+  position: absolute;
+  z-index: 20;
+  top: 2.2%;
+  bottom: 2.2%;
+  left: 50%;
+  width: clamp(18px, 1.7vw, 28px);
+  transform: translateX(-50%);
+  background:
+    linear-gradient(90deg, rgba(34, 23, 15, .34), rgba(255, 255, 255, .36) 47%, rgba(46, 30, 18, .46)),
+    repeating-linear-gradient(0deg, rgba(75, 53, 32, .1) 0 2px, transparent 2px 12px);
+  filter: blur(.4px);
+  box-shadow: 0 0 26px rgba(43, 29, 18, .34);
+  pointer-events: none;
+}
+
+.brandRow,
+.introContent,
+.questionSide,
+.homeVisa,
+.visaPage,
+.resultLeft,
+.resultRight {
+  position: relative;
+  z-index: 2;
+}
+
+.passportWatermark {
+  position: absolute;
+  z-index: 1;
+  inset: 6% 5%;
+  width: 90%;
+  height: 88%;
+  opacity: .52;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  filter: blur(.08px);
+}
+
+.passportWatermark g {
+  display: none;
+}
+
+.passportWatermark path,
+.passportWatermark circle,
+.passportWatermark text {
+  fill: none;
+  stroke: rgba(49, 91, 125, .16);
+  stroke-width: 1.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.passportWatermark text {
+  fill: rgba(49, 91, 125, .18);
+  stroke: none;
+  font: 700 22px "Courier New", monospace;
+  letter-spacing: .22em;
+}
+
+.passportWatermark .wmLines {
+  display: block;
+  opacity: .36;
+}
+
+.passportWatermark .wmLines path {
+  stroke: rgba(89, 70, 52, .18);
+  stroke-width: .75;
+}
+
+.watermark-aix .wmAix,
+.watermark-paris .wmParis,
+.watermark-japan .wmJapan,
+.watermark-maldives .wmMaldives,
+.watermark-tanzania .wmTanzania {
+  display: block;
+}
+
+.passportWatermark .wmAix path:first-child,
+.passportWatermark .wmParis path:first-child,
+.passportWatermark .wmJapan path:first-child,
+.passportWatermark .wmMaldives path:first-child,
+.passportWatermark .wmTanzania path:first-child {
+  fill: rgba(49, 91, 125, .028);
+  stroke: rgba(49, 91, 125, .12);
+  stroke-width: 1.1;
+}
+
+.passportWatermark .wmMaldives path,
+.passportWatermark .wmAix path {
+  stroke: rgba(49, 91, 125, .14);
+}
+
+.watermark-aix .passportWatermark {
+  opacity: .46;
+  transform: translateY(2%) rotate(-1deg);
+}
+
+.watermark-paris .passportWatermark {
+  opacity: .5;
+  transform: translateY(2%) rotate(-2deg);
+}
+
+.watermark-japan .passportWatermark {
+  opacity: .48;
+  transform: translateX(-1%) rotate(1deg);
+}
+
+.watermark-maldives .passportWatermark {
+  opacity: .5;
+  transform: translateY(1%) rotate(-1deg);
+}
+
+.watermark-tanzania .passportWatermark {
+  opacity: .48;
+  transform: translateY(1%) rotate(1deg);
+}
+
+.rightPage .passportWatermark {
+  inset: 7% 6% 5% 4%;
+}
+
+.leftPage .passportWatermark {
+  inset: 7% 4% 5% 6%;
+}
+
+.brandRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.brandRow strong {
+  display: block;
+  font: 800 clamp(26px, 2.2vw, 38px) / .9 Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: -.04em;
+}
+
+.brandRow span,
+.passportLabel,
+.pageSerial,
+.questionTop,
+.travelNote,
+.visaTrace,
+.geoNote,
+.resultStamp span,
+.resultStamp small,
+.traits b {
+  font-family: Inter, Montserrat, Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.brandRow span {
+  display: block;
+  margin-top: 6px;
+  max-width: 280px;
+  color: rgba(24, 23, 20, .64);
+  font-size: clamp(8px, .75vw, 12px);
+  font-weight: 800;
+  letter-spacing: .14em;
+  line-height: 1.35;
+}
+
+.passportLabel {
+  color: rgba(24, 23, 20, .54);
+  text-align: right;
+  font-size: clamp(9px, .8vw, 12px);
+  line-height: 1.5;
+  letter-spacing: .28em;
+}
+
+.introContent {
+  min-height: calc(100% - 62px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: clamp(46px, 5vw, 84px);
+}
+
+.stampSmall,
+.homeStamp,
+.visaStamp,
+.secondaryStamp {
+  color: #a63e35;
+  border: 3px solid currentColor;
+  opacity: .82;
+  mix-blend-mode: multiply;
+}
+
+.stampSmall {
+  align-self: flex-start;
+  padding: 8px 18px;
+  transform: rotate(-7deg);
+  font: 900 clamp(14px, 1.2vw, 19px) / 1.05 Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: .06em;
+}
+
+.introContent h1,
+.questionSide h2,
+.resultLeft h2 {
+  font-family: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  letter-spacing: 0;
+}
+
+.introContent h1 {
+  max-width: 620px;
+  margin: clamp(28px, 4vw, 54px) 0 clamp(12px, 1.5vw, 22px);
+  font-size: clamp(42px, 5.15vw, 86px);
+  line-height: .88;
+  font-weight: 800;
+}
+
+.lead {
+  margin: 0;
+  max-width: 550px;
+  font-size: clamp(18px, 1.45vw, 25px);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.primary,
+.secondary {
+  min-height: 60px;
+  border: 1px solid rgba(52, 40, 28, .68);
+  border-radius: 4px;
+  color: #f5edda;
+  background:
+    linear-gradient(180deg, rgba(43, 60, 55, .98), rgba(22, 35, 32, .98)),
+    #192523;
+  padding: 18px 28px;
+  font: 900 clamp(13px, 1vw, 16px) / 1 Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: .16em;
+  cursor: pointer;
+  box-shadow:
+    inset 0 0 0 2px rgba(180, 139, 80, .52),
+    0 10px 18px rgba(67, 45, 26, .24);
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+
+.primary {
+  align-self: flex-start;
+  margin-top: clamp(30px, 4vw, 58px);
+}
+
+.primary:active,
+.secondary:active,
+.answers button:active {
+  transform: translateY(2px) scale(.99);
+  filter: saturate(1.1);
+}
+
+.mrz {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: rgba(38, 35, 30, .58);
+  font: 700 clamp(10px, .9vw, 14px) / 1.75 "Courier New", monospace;
+  letter-spacing: .12em;
+}
+
+.homeVisa {
+  height: 100%;
+}
+
+.compass {
+  position: absolute;
+  right: 8%;
+  top: 8%;
+  width: clamp(104px, 11vw, 180px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(49, 91, 125, .22);
+  border-radius: 50%;
+  color: rgba(49, 91, 125, .28);
+  font-size: clamp(56px, 7vw, 110px);
+}
+
+.compass::before,
+.compass::after {
+  content: '';
+  position: absolute;
+  inset: 14%;
+  border: 1px solid rgba(49, 91, 125, .16);
+  border-radius: 50%;
+}
+
+.compass::after {
+  inset: 46% 8%;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid rgba(49, 91, 125, .2);
+  transform: rotate(45deg);
+}
+
+.worldMap {
+  position: absolute;
+  left: 6%;
+  top: 20%;
+  width: 66%;
+  height: 50%;
+  opacity: .18;
+}
+
+.continent {
+  position: absolute;
+  display: block;
+  border: 2px solid #315b7d;
+  border-radius: 42% 58% 46% 54%;
+  transform: rotate(-10deg);
+}
+
+.c1 {
+  left: 2%;
+  top: 12%;
+  width: 28%;
+  height: 38%;
+}
+
+.c2 {
+  left: 36%;
+  top: 24%;
+  width: 34%;
+  height: 30%;
+  transform: rotate(12deg);
+}
+
+.c3 {
+  left: 58%;
+  top: 54%;
+  width: 19%;
+  height: 22%;
+}
+
+.homeStamp {
+  position: absolute;
+  left: 10%;
+  bottom: 20%;
+  padding: 14px 26px;
+  transform: rotate(-11deg);
+  font: 900 clamp(18px, 1.7vw, 28px) / 1.05 Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: .12em;
+}
+
+.homeStamp strong {
+  font-size: 1.32em;
+}
+
+.visaTrace {
+  position: absolute;
+  right: 5%;
+  bottom: 11%;
+  color: rgba(24, 23, 20, .54);
+  text-align: right;
+  font-size: clamp(10px, .9vw, 14px);
+  font-weight: 800;
+  letter-spacing: .14em;
+  line-height: 2;
+}
+
+.planeRoute,
+.airRoute {
+  position: absolute;
+  border-top: 2px dashed rgba(65, 107, 84, .36);
+  transform: rotate(-18deg);
+}
+
+.planeRoute {
+  left: 12%;
+  right: 18%;
+  top: 56%;
+}
+
+.planeRoute::after,
+.airRoute span::after {
+  content: '✈';
+  position: absolute;
+  right: -10px;
+  top: -15px;
+  color: rgba(65, 107, 84, .48);
+  font-size: 24px;
+}
+
+.handNote {
+  position: absolute;
+  color: rgba(117, 97, 124, .62);
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  font-size: clamp(17px, 1.4vw, 24px);
+  transform: rotate(-8deg);
+}
+
+.homeVisa .handNote {
+  left: 48%;
+  bottom: 28%;
+}
+
+.questionSide {
+  height: calc(100% - 64px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: clamp(16px, 2vw, 28px);
+}
+
+.questionTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: #a63e35;
+  font-size: clamp(11px, .95vw, 14px);
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+
+.visaDots {
+  display: flex;
+  gap: 8px;
+}
+
+.visaDots i {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(166, 62, 53, .42);
+  background: transparent;
+}
+
+.visaDots i.active {
+  background: rgba(166, 62, 53, .7);
+  box-shadow: inset 0 0 0 4px #f5edda;
+}
+
+.progress {
+  height: 5px;
+  margin: 16px 0 clamp(24px, 3vw, 44px);
+  background: rgba(115, 96, 71, .18);
+  overflow: hidden;
+}
+
+.progress i {
+  display: block;
+  height: 100%;
+  background: rgba(166, 62, 53, .68);
+  transition: width .42s ease;
+}
+
+.questionSide h2 {
+  margin: 0 0 clamp(22px, 3vw, 42px);
+  max-width: 650px;
+  font-size: clamp(28px, 3.18vw, 56px);
+  line-height: .99;
+  font-weight: 800;
+}
+
+.answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(10px, 1vw, 16px);
+}
+
+.answers button {
+  position: relative;
+  min-height: clamp(72px, 7.7vh, 98px);
+  padding: 16px 18px 16px 58px;
+  border: 1px solid rgba(72, 57, 39, .42);
+  border-radius: 4px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .28), rgba(245, 237, 218, .46)),
+    rgba(245, 237, 218, .36);
+  color: #24211d;
+  text-align: left;
+  font-size: clamp(15px, 1.05vw, 18px);
+  font-weight: 750;
+  line-height: 1.28;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22), 0 6px 12px rgba(67, 45, 26, .08);
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease, border-color .12s ease;
+}
+
+.answers button::after {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(72, 57, 39, .11);
+  pointer-events: none;
+}
+
+.answers button:active,
+.answers button:focus-visible {
+  border-color: rgba(49, 91, 125, .65);
+  background: rgba(231, 237, 232, .74);
+  box-shadow: inset 0 0 0 2px rgba(49, 91, 125, .16), 0 3px 8px rgba(67, 45, 26, .12);
+}
+
+.answers button:disabled {
+  pointer-events: none;
+  opacity: .78;
+}
+
+.answerIndex {
+  position: absolute;
+  left: 19px;
+  top: 18px;
+  color: rgba(113, 92, 65, .74);
+  font: 900 13px / 1 Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: .08em;
+}
+
+.travelNote {
+  margin-top: clamp(18px, 2vw, 34px);
+  color: rgba(24, 23, 20, .48);
+  font-size: clamp(9px, .8vw, 12px);
+  font-weight: 900;
+  letter-spacing: .22em;
+}
+
+.visaPage {
+  height: 100%;
+}
+
+.pageSerial {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: rgba(24, 23, 20, .44);
+  font-size: clamp(9px, .8vw, 12px);
+  font-weight: 900;
+  letter-spacing: .18em;
+}
+
+.countryShape {
+  position: absolute;
+  left: 10%;
+  top: 13%;
+  width: 48%;
+  height: 52%;
+  fill: none;
+  stroke: rgba(49, 91, 125, .24);
+  stroke-width: 4;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .2));
+}
+
+.countryTitle {
+  position: absolute;
+  right: 6%;
+  top: 10%;
+  color: rgba(24, 23, 20, .09);
+  font: 900 clamp(42px, 6vw, 105px) / .88 Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: .06em;
+  writing-mode: vertical-rl;
+}
+
+.visaStamp {
+  position: absolute;
+  left: 14%;
+  top: 38%;
+  width: min(62%, 390px);
+  padding: clamp(12px, 1.3vw, 20px);
+  transform: rotate(-8deg);
+  text-align: center;
+  font: 900 clamp(10px, .9vw, 14px) / 1.35 Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: .12em;
+  background:
+    radial-gradient(circle at 20% 20%, transparent 0 4px, currentColor 4px 5px, transparent 6px),
+    linear-gradient(90deg, rgba(255, 255, 255, .12), transparent);
+  background-size: 20px 18px, auto;
+}
+
+.visaStamp span,
+.visaStamp strong {
+  display: block;
+}
+
+.visaStamp strong {
+  margin: 4px 0;
+  font-size: clamp(14px, 1.4vw, 22px);
+  line-height: 1.05;
+}
+
+.visaStamp.blue {
+  color: #315b7d;
+  transform: rotate(7deg);
+}
+
+.secondaryStamp {
+  position: absolute;
+  right: 10%;
+  bottom: 28%;
+  width: clamp(118px, 11vw, 176px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: rgba(65, 107, 84, .74);
+  text-align: center;
+  font: 900 clamp(10px, .9vw, 14px) / 1.35 Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: .12em;
+  transform: rotate(12deg);
+}
+
+.landmark {
+  position: absolute;
+  left: 9%;
+  bottom: 16%;
+  color: rgba(24, 23, 20, .22);
+  font: 900 clamp(20px, 2.4vw, 44px) / 1 Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: .16em;
+}
+
+.visaLines {
+  position: absolute;
+  right: 11%;
+  top: 23%;
+  width: 30%;
+  display: grid;
+  gap: 12px;
+}
+
+.visaLines i {
+  display: block;
+  height: 2px;
+  background: rgba(24, 23, 20, .16);
+}
+
+.geoNote {
+  position: absolute;
+  right: 8%;
+  bottom: 14%;
+  color: rgba(24, 23, 20, .47);
+  font-size: clamp(10px, .85vw, 13px);
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+.countryNote {
+  left: 33%;
+  bottom: 29%;
+  color: rgba(117, 97, 124, .5);
+}
+
+.airRoute {
+  left: 8%;
+  right: 16%;
+  top: 70%;
+}
+
+.japan .countryShape {
+  stroke: rgba(166, 62, 53, .25);
+}
+
+.japan .landmark {
+  color: rgba(166, 62, 53, .22);
+}
+
+.brazil .countryShape {
+  stroke: rgba(65, 107, 84, .28);
+}
+
+.thailand .countryShape {
+  stroke: rgba(117, 97, 124, .26);
+}
+
+.turnPage {
+  position: absolute;
+  z-index: 12;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  transform-origin: left center;
+  transform: rotateY(0deg);
+  transform-style: preserve-3d;
+  pointer-events: none;
+  border-radius: 7px 28px 28px 7px;
+  filter: drop-shadow(-10px 10px 16px rgba(0, 0, 0, .12));
+}
+
+.turnFace {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  backface-visibility: hidden;
+  overflow: hidden;
+  border: 1px solid rgba(76, 54, 34, .52);
+  border-left: 0;
+  border-radius: 7px 28px 28px 7px;
+  background-color: #f2e7d1;
+  background-image:
+    radial-gradient(circle at 76% 18%, rgba(255, 255, 255, .5), transparent 28%),
+    repeating-linear-gradient(0deg, rgba(78, 54, 31, .034) 0 1px, transparent 1px 18px),
+    repeating-linear-gradient(90deg, rgba(78, 54, 31, .025) 0 1px, transparent 1px 22px);
+  box-shadow: inset 18px 0 28px rgba(66, 43, 24, .16);
+}
+
+.turnFace::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, .28), transparent 34%, rgba(255, 255, 255, .24));
+}
+
+.turnFace span,
+.turnFace strong {
+  color: rgba(24, 23, 20, .45);
+  font-family: Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: .18em;
+}
+
+.turnFace span {
+  font-size: clamp(15px, 1.4vw, 22px);
+  font-weight: 900;
+}
+
+.turnFace strong {
+  margin-top: 12px;
+  font-size: clamp(26px, 3.2vw, 50px);
+}
+
+.turnFace.back {
+  transform: rotateY(180deg);
+  border-radius: 28px 7px 7px 28px;
+}
+
+.turnPage.turning {
+  animation: flipPage .66s cubic-bezier(.2, .62, .18, 1) forwards;
+}
+
+.turnPage.turning .turnFace::after {
+  animation: pageShade .66s ease forwards;
+}
+
+.resultLeft {
+  height: calc(100% - 64px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.eyebrow {
+  color: #a63e35;
+  font: 900 clamp(11px, .9vw, 14px) / 1 Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: .18em;
+}
+
+.resultLeft h2 {
+  margin: clamp(14px, 2vw, 28px) 0;
+  max-width: 600px;
+  font-size: clamp(38px, 4.8vw, 82px);
+  line-height: .9;
+  font-weight: 800;
+}
+
+.resultCopy {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+
+.resultCopy.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.resultLeft p,
+.destinationDetails p {
+  max-width: 560px;
+  font-size: clamp(16px, 1.25vw, 21px);
+  line-height: 1.5;
+}
+
+.resultLeft blockquote {
+  margin: clamp(18px, 2vw, 30px) 0;
+  max-width: 560px;
+  font: italic clamp(18px, 1.7vw, 28px) / 1.35 Georgia, serif;
+}
+
+.traits {
+  display: flex;
+  gap: clamp(14px, 1.7vw, 28px);
+  flex-wrap: wrap;
+}
+
+.traits span {
+  min-width: 140px;
+  font-size: clamp(14px, 1vw, 17px);
+  font-weight: 750;
+}
+
+.traits b {
+  display: block;
+  margin-bottom: 5px;
+  color: rgba(24, 23, 20, .48);
+  font-size: 10px;
+  letter-spacing: .15em;
+}
+
+.resultRight {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.resultRight.shake {
+  animation: pageBam .42s ease-out;
+}
+
+.resultStamp {
+  position: relative;
+  width: min(86%, 480px);
+  padding: clamp(15px, 1.8vw, 26px);
+  opacity: 0;
+  color: #a63e35;
+  border: 4px solid currentColor;
+  background:
+    radial-gradient(circle at 12% 25%, rgba(255, 255, 255, .45) 0 2px, transparent 3px),
+    radial-gradient(circle at 72% 70%, rgba(255, 255, 255, .35) 0 2px, transparent 3px),
+    repeating-linear-gradient(90deg, transparent 0 8px, rgba(255, 255, 255, .16) 8px 10px);
+  mix-blend-mode: multiply;
+  filter: blur(5px);
+}
+
+.resultStamp::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 1px solid currentColor;
+  opacity: .7;
+}
+
+.resultStamp span,
+.resultStamp small,
+.resultStamp em {
+  display: block;
+  font-weight: 950;
+  letter-spacing: .16em;
+}
+
+.resultStamp span {
+  font-size: clamp(11px, .9vw, 14px);
+}
+
+.resultStamp strong {
+  display: block;
+  margin: 7px 0;
+  font: 950 clamp(23px, 2.8vw, 48px) / .98 Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: .02em;
+}
+
+.resultStamp small {
+  font-size: clamp(10px, .9vw, 14px);
+}
+
+.resultStamp em {
+  position: absolute;
+  right: 18px;
+  bottom: 12px;
+  font-style: normal;
+  font-size: clamp(12px, 1vw, 16px);
+}
+
+.profileStamp {
+  transform: translateY(-140px) scale(2.4) rotate(-14deg);
+}
+
+.destinationStamp {
+  width: min(58%, 330px);
+  min-height: clamp(160px, 18vw, 250px);
+  display: grid;
+  place-items: center;
+  align-content: center;
+  margin-top: clamp(12px, 1.4vw, 24px);
+  border-radius: 50%;
+  color: #315b7d;
+  transform: translateY(-120px) scale(2.2) rotate(11deg);
+}
+
+.profileStamp.stampIn {
+  animation: stampProfile .7s cubic-bezier(.18, .92, .22, 1.22) forwards;
+}
+
+.destinationStamp.stampIn {
+  animation: stampDestination .7s cubic-bezier(.18, .92, .22, 1.22) forwards;
+}
+
+.destinationDetails {
+  min-height: 126px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .55s ease .45s, transform .55s ease .45s;
+}
+
+.destinationDetails.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.destinationDetails p {
+  margin: clamp(14px, 1.7vw, 28px) auto clamp(12px, 1.3vw, 20px);
+}
+
+.secondary {
+  min-height: 54px;
+  padding: 15px 22px;
+}
+
+@keyframes flipPage {
+  0% {
+    transform: rotateY(0deg);
+    filter: drop-shadow(-4px 2px 8px rgba(0, 0, 0, .1));
+  }
+  38% {
+    transform: rotateY(-74deg);
+    filter: drop-shadow(-34px 15px 32px rgba(0, 0, 0, .34));
+  }
+  67% {
+    transform: rotateY(-138deg);
+    filter: drop-shadow(22px 18px 28px rgba(0, 0, 0, .2));
+  }
+  100% {
+    transform: rotateY(-180deg);
+    filter: drop-shadow(6px 4px 14px rgba(0, 0, 0, .08));
+  }
+}
+
+@keyframes pageShade {
+  0% {
+    opacity: 0;
+  }
+  45% {
+    opacity: .72;
+  }
+  100% {
+    opacity: .05;
+  }
+}
+
+@keyframes stampProfile {
+  0% {
+    opacity: 0;
+    transform: translateY(-170px) scale(2.35) rotate(-17deg);
+    filter: blur(8px);
+  }
+  48% {
+    opacity: .95;
+    transform: translateY(8px) scale(.88) rotate(-5deg);
+    filter: blur(0);
+  }
+  64% {
+    transform: translateY(-5px) scale(1.08) rotate(-8deg);
+  }
+  78% {
+    transform: translateY(2px) scale(.98) rotate(-6deg);
+  }
+  100% {
+    opacity: .88;
+    transform: translateY(0) scale(1) rotate(-7deg);
+    filter: blur(0);
+  }
+}
+
+@keyframes stampDestination {
+  0% {
+    opacity: 0;
+    transform: translateY(-150px) scale(2.2) rotate(17deg);
+    filter: blur(8px);
+  }
+  48% {
+    opacity: .94;
+    transform: translateY(8px) scale(.86) rotate(6deg);
+    filter: blur(0);
+  }
+  64% {
+    transform: translateY(-4px) scale(1.07) rotate(10deg);
+  }
+  78% {
+    transform: translateY(2px) scale(.98) rotate(8deg);
+  }
+  100% {
+    opacity: .86;
+    transform: translateY(0) scale(1) rotate(9deg);
+    filter: blur(0);
+  }
+}
+
+@keyframes passportImpact {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  30% {
+    transform: translateY(3px) rotate(.18deg);
+  }
+  52% {
+    transform: translateY(-2px) rotate(-.14deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes pageBam {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  28% {
+    transform: translateX(2px) rotate(.16deg);
+  }
+  45% {
+    transform: translateX(-2px) rotate(-.12deg);
+  }
+  62% {
+    transform: translateX(1px);
+  }
+}
+
+@media (max-width: 1100px), (max-height: 760px) {
+  .passportShell {
+    width: min(94vw, 1320px);
+    max-height: 92vh;
+  }
+
+  .passportPage {
+    padding: clamp(18px, 2.4vw, 36px);
+  }
+
+  .brandRow span {
+    max-width: 210px;
+  }
+
+  .answers {
+    gap: 9px;
+  }
+
+  .answers button {
+    min-height: 68px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+  }
+
+  .travelNote {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 760px) {
+  body {
+    overflow: auto;
+  }
+
+  .scene {
+    min-height: 100svh;
+    padding: 12px;
+  }
+
+  .passportShell {
+    width: 100%;
+    max-height: none;
+    aspect-ratio: auto;
+    min-height: 900px;
+  }
+
+  .spread {
+    display: block;
+  }
+
+  .passportPage {
+    min-height: 900px;
+    border-radius: 22px;
+  }
+
+  .rightPage,
+  .binding,
+  .turnPage {
+    display: none;
+  }
+
+  .introContent,
+  .questionSide,
+  .resultLeft {
+    min-height: 760px;
+    height: auto;
+  }
+
+  .answers {
+    grid-template-columns: 1fr;
+  }
+
+  .mrz {
+    position: static;
+    margin-top: 36px;
+  }
+}
+
+/* Reference-image pass: tighter, scanned passport pages with dry ink and compact touch UI. */
+.scene {
+  padding: clamp(10px, 1.6vw, 22px);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(115, 72, 37, .18), transparent 28%),
+    radial-gradient(circle at 74% 90%, rgba(64, 40, 25, .24), transparent 34%),
+    linear-gradient(135deg, #19100b 0%, #0d0907 58%, #050403 100%);
+}
+
+.passportShell {
+  width: min(94vw, 1510px);
+  max-height: 91vh;
+  border: clamp(6px, .75vw, 12px) solid #141415;
+  border-radius: clamp(14px, 1.5vw, 25px);
+  background:
+    linear-gradient(90deg, #07111a 0 1.2%, #2a160e 1.2% 2%, transparent 2% 98%, #2a160e 98% 98.8%, #07111a 98.8%),
+    #101011;
+  box-shadow:
+    inset 0 0 0 2px rgba(196, 148, 89, .32),
+    inset 0 0 0 5px rgba(2, 10, 17, .82),
+    0 32px 50px rgba(0, 0, 0, .78);
+  filter: none;
+}
+
+.passportShadow {
+  inset: 0 1% -4%;
+  filter: blur(18px);
+}
+
+.spread {
+  inset: clamp(7px, .7vw, 13px);
+}
+
+.passportPage {
+  padding: clamp(20px, 2.35vw, 40px) clamp(24px, 2.8vw, 48px);
+  background-color: #efe4cf;
+  background-image:
+    radial-gradient(circle at 16% 18%, rgba(255, 255, 255, .35), transparent 20%),
+    radial-gradient(circle at 82% 86%, rgba(120, 76, 38, .13), transparent 27%),
+    radial-gradient(circle at 30% 70%, rgba(87, 54, 29, .09) 0 1px, transparent 2px),
+    repeating-linear-gradient(0deg, rgba(83, 58, 35, .035) 0 1px, transparent 1px 15px),
+    repeating-linear-gradient(90deg, rgba(83, 58, 35, .026) 0 1px, transparent 1px 18px),
+    linear-gradient(120deg, rgba(83, 48, 28, .11), transparent 34%, rgba(255, 255, 255, .16));
+  border-color: rgba(89, 61, 38, .42);
+  box-shadow:
+    inset 0 0 58px rgba(80, 52, 27, .18),
+    inset 0 0 0 1px rgba(255, 255, 255, .28);
+}
+
+.leftPage {
+  border-radius: 16px 4px 4px 16px;
+}
+
+.rightPage {
+  border-radius: 4px 16px 16px 4px;
+}
+
+.passportPage::before {
+  opacity: .42;
+  background:
+    radial-gradient(circle at 14% 28%, rgba(74, 45, 24, .18) 0 1px, transparent 1px),
+    radial-gradient(circle at 66% 18%, rgba(74, 45, 24, .14) 0 1px, transparent 1px),
+    linear-gradient(45deg, transparent 48%, rgba(49, 91, 125, .055) 49% 51%, transparent 52%),
+    linear-gradient(-45deg, transparent 49%, rgba(166, 62, 53, .035) 50%, transparent 51%);
+  background-size: 9px 9px, 13px 13px, 38px 38px, 52px 52px;
+}
+
+.passportPage::after {
+  background:
+    radial-gradient(circle at 100% 50%, rgba(30, 18, 10, .27), transparent 16%),
+    linear-gradient(90deg, rgba(48, 30, 17, .19), transparent 12%),
+    linear-gradient(180deg, rgba(255, 255, 255, .16), transparent 38%, rgba(74, 48, 29, .09));
+}
+
+.rightPage::after {
+  background:
+    radial-gradient(circle at 0 50%, rgba(30, 18, 10, .29), transparent 17%),
+    linear-gradient(270deg, rgba(255, 255, 255, .14), transparent 48%),
+    linear-gradient(180deg, rgba(255, 255, 255, .1), transparent 38%, rgba(74, 48, 29, .09));
+}
+
+.binding {
+  top: 1.5%;
+  bottom: 1.5%;
+  width: clamp(22px, 2vw, 34px);
+  background:
+    linear-gradient(90deg, rgba(13, 8, 5, .42), rgba(255, 248, 230, .32) 42%, rgba(44, 28, 16, .55) 62%, rgba(13, 8, 5, .42)),
+    repeating-linear-gradient(0deg, rgba(70, 44, 24, .16) 0 2px, transparent 2px 10px);
+  filter: blur(.25px);
+}
+
+.brandRow {
+  min-height: clamp(34px, 3vw, 56px);
+}
+
+.brandLockup {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.brandSeal {
+  width: clamp(24px, 2.1vw, 35px);
+  aspect-ratio: 1;
+  display: inline-block;
+  border: 1.5px solid #171511;
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 46%, rgba(23, 21, 17, .45) 47% 53%, transparent 54%),
+    linear-gradient(0deg, transparent 46%, rgba(23, 21, 17, .45) 47% 53%, transparent 54%),
+    repeating-radial-gradient(circle, transparent 0 5px, rgba(23, 21, 17, .36) 6px 7px);
+  opacity: .78;
+}
+
+.brandRow strong {
+  font-size: clamp(20px, 1.5vw, 28px);
+  line-height: .85;
+  letter-spacing: -.06em;
+}
+
+.brandRow span {
+  max-width: 220px;
+  margin-top: 4px;
+  font-size: clamp(6px, .55vw, 9px);
+  letter-spacing: .08em;
+}
+
+.passportLabel {
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  font-size: clamp(10px, .8vw, 14px);
+  letter-spacing: .1em;
+  line-height: 1.15;
+  text-align: left;
+  transform: rotate(2deg);
+}
+
+.visasLabel {
+  position: absolute;
+  z-index: 4;
+  top: clamp(18px, 2vw, 34px);
+  right: clamp(24px, 2.8vw, 48px);
+  color: rgba(24, 23, 20, .56);
+  font: italic clamp(13px, 1.1vw, 20px) / 1 Georgia, serif;
+}
+
+.introContent {
+  min-height: calc(100% - 42px);
+  justify-content: center;
+  padding: 0 0 clamp(28px, 3.1vw, 52px);
+}
+
+.stampSmall {
+  padding: clamp(7px, .7vw, 11px) clamp(14px, 1.6vw, 24px);
+  border-width: 2px;
+  font-size: clamp(13px, 1.05vw, 20px);
+  transform: rotate(-5deg);
+  letter-spacing: .07em;
+}
+
+.stampSmall::before {
+  content: '+';
+  margin-right: 10px;
+  font-size: 1.35em;
+}
+
+.introContent h1 {
+  max-width: 540px;
+  margin: clamp(26px, 3.1vw, 50px) 0 clamp(10px, 1vw, 16px);
+  font-size: clamp(38px, 4.4vw, 74px);
+  line-height: .9;
+}
+
+.lead {
+  font-size: clamp(13px, 1vw, 18px);
+}
+
+.primary,
+.secondary {
+  min-height: clamp(46px, 4.2vw, 66px);
+  border-radius: 6px;
+  padding: clamp(13px, 1.1vw, 18px) clamp(24px, 2vw, 34px);
+  background:
+    linear-gradient(180deg, rgba(32, 50, 45, .98), rgba(11, 18, 17, .98)),
+    #111b18;
+  font-size: clamp(10px, .8vw, 14px);
+  box-shadow:
+    inset 0 0 0 1px rgba(229, 194, 128, .24),
+    0 9px 14px rgba(15, 10, 6, .3);
+}
+
+.primary {
+  margin-top: clamp(20px, 2.2vw, 36px);
+}
+
+.mrz {
+  bottom: clamp(6px, .6vw, 10px);
+  font-size: clamp(7px, .58vw, 10px);
+  letter-spacing: .18em;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.homeVisa .compass {
+  right: 8%;
+  top: 9%;
+  width: clamp(64px, 6vw, 112px);
+  color: rgba(49, 91, 125, .2);
+}
+
+.worldMap {
+  left: 6%;
+  top: 20%;
+  width: 74%;
+  height: 42%;
+  opacity: .13;
+}
+
+.aixScene {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 13%;
+  height: 54%;
+  opacity: .35;
+  mix-blend-mode: multiply;
+}
+
+.aixScene span {
+  position: absolute;
+  display: block;
+}
+
+.aixScene .lake {
+  left: 0;
+  right: 0;
+  bottom: 6%;
+  height: 34%;
+  border-top: 2px solid rgba(49, 91, 125, .34);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 12px, rgba(49, 91, 125, .22) 13px 14px);
+  border-radius: 48% 52% 36% 42%;
+}
+
+.aixScene .mountains {
+  left: 2%;
+  right: 8%;
+  bottom: 30%;
+  height: 48%;
+  background:
+    linear-gradient(135deg, transparent 49%, rgba(49, 91, 125, .34) 50%, transparent 51%),
+    linear-gradient(45deg, transparent 49%, rgba(49, 91, 125, .28) 50%, transparent 51%);
+  clip-path: polygon(0 100%, 22% 34%, 36% 62%, 54% 18%, 70% 56%, 84% 30%, 100% 100%);
+}
+
+.aixScene .thermal {
+  right: 6%;
+  bottom: 20%;
+  width: 86px;
+  height: 118px;
+  border-left: 2px solid rgba(49, 91, 125, .3);
+  border-right: 2px solid rgba(49, 91, 125, .22);
+  transform: skew(-8deg);
+}
+
+.aixStamp {
+  color: #315b7d;
+}
+
+.homeStamp {
+  left: 10%;
+  bottom: 24%;
+  padding: 12px 22px;
+  border-width: 2px;
+  transform: rotate(-7deg);
+  font-size: clamp(15px, 1.25vw, 23px);
+}
+
+.visaTrace {
+  right: auto;
+  left: 7%;
+  top: 9%;
+  bottom: auto;
+  text-align: left;
+  font-family: "Courier New", monospace;
+  font-size: clamp(8px, .65vw, 11px);
+  line-height: 1.45;
+  letter-spacing: .16em;
+}
+
+.homeVisa .handNote {
+  left: 47%;
+  bottom: 24%;
+  color: rgba(68, 75, 92, .62);
+}
+
+.questionSide {
+  height: calc(100% - 40px);
+  justify-content: center;
+  padding-top: 0;
+}
+
+.questionTop {
+  justify-content: flex-start;
+  gap: 12px;
+  color: #b23732;
+  font-size: clamp(10px, .75vw, 13px);
+  letter-spacing: .08em;
+}
+
+.questionTop b {
+  color: #171511;
+  font-size: clamp(16px, 1.3vw, 23px);
+  line-height: 1;
+}
+
+.visaDots {
+  margin-left: auto;
+  gap: 6px;
+}
+
+.visaDots i {
+  width: 10px;
+  height: 10px;
+  border-width: 1px;
+}
+
+.visaDots i.active {
+  box-shadow: inset 0 0 0 2px #efe4cf;
+}
+
+.progress {
+  display: none;
+}
+
+.questionSide h2 {
+  max-width: 560px;
+  margin: clamp(14px, 1.4vw, 24px) 0 clamp(22px, 2vw, 34px);
+  font-family: Inter, Montserrat, Arial, sans-serif;
+  font-size: clamp(21px, 1.8vw, 33px);
+  line-height: 1.12;
+  letter-spacing: -.03em;
+}
+
+.answers {
+  max-width: 95%;
+  gap: clamp(8px, .75vw, 13px);
+}
+
+.answers button {
+  min-height: clamp(74px, 7.2vh, 98px);
+  padding: clamp(13px, 1.1vw, 18px) clamp(12px, 1vw, 18px) clamp(13px, 1.1vw, 18px) clamp(42px, 3.2vw, 58px);
+  background: rgba(245, 237, 218, .34);
+  font-size: clamp(10px, .82vw, 15px);
+  font-weight: 800;
+  line-height: 1.28;
+  border-color: rgba(64, 49, 32, .22);
+  box-shadow: none;
+}
+
+.answers button::after {
+  inset: 5px;
+  border-color: rgba(64, 49, 32, .08);
+}
+
+.answerIndex {
+  left: clamp(14px, 1.1vw, 20px);
+  top: clamp(14px, 1.1vw, 20px);
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(24, 23, 20, .5);
+  border-radius: 50%;
+  color: rgba(24, 23, 20, .72);
+  font-size: 0;
+}
+
+.answerIndex::after {
+  content: '+';
+  font-size: 14px;
+  line-height: 1;
+}
+
+.travelNote {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(4px, .5vw, 8px);
+  margin: 0;
+  font-size: clamp(7px, .58vw, 10px);
+  letter-spacing: .2em;
+}
+
+.pageSerial {
+  top: 8%;
+  left: 8%;
+  font-family: "Courier New", monospace;
+  font-size: clamp(8px, .6vw, 10px);
+  letter-spacing: .16em;
+  opacity: .58;
+}
+
+.countryTitle {
+  display: none;
+}
+
+.countryShape {
+  left: 9%;
+  top: 17%;
+  width: 76%;
+  height: 57%;
+  stroke: rgba(49, 91, 125, .28);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .78;
+}
+
+.countryScene .wash {
+  fill: rgba(49, 91, 125, .055);
+  stroke: none;
+}
+
+.countryScene .sunWash {
+  fill: rgba(166, 62, 53, .09);
+  stroke: rgba(166, 62, 53, .18);
+}
+
+.countryScene .mapLine {
+  fill: none;
+  stroke: rgba(49, 91, 125, .2);
+  stroke-width: 2;
+}
+
+.countryScene .mapLine.thin {
+  stroke-width: 1.4;
+}
+
+.countryScene .landmarkLine,
+.countryScene .hillLine,
+.countryScene .palmLine {
+  fill: none;
+  stroke: rgba(49, 91, 125, .42);
+  stroke-width: 2.6;
+}
+
+.countryScene .routeLine,
+.countryScene .birdLine {
+  fill: none;
+  stroke: rgba(65, 107, 84, .33);
+  stroke-width: 1.7;
+  stroke-dasharray: 6 8;
+}
+
+.countryScene.japan .landmarkLine,
+.countryScene.japan .mapLine,
+.countryScene.japan .birdLine {
+  stroke: rgba(49, 91, 125, .42);
+}
+
+.countryScene.japan .mapLine {
+  stroke: rgba(166, 62, 53, .24);
+}
+
+.countryScene.brazil .wash {
+  fill: rgba(65, 107, 84, .06);
+}
+
+.countryScene.brazil .mapLine {
+  stroke: rgba(65, 107, 84, .22);
+}
+
+.countryScene.brazil .landmarkLine,
+.countryScene.brazil .hillLine {
+  stroke: rgba(49, 91, 125, .39);
+}
+
+.countryScene.thailand .wash {
+  fill: rgba(117, 97, 124, .06);
+}
+
+.countryScene.thailand .mapLine {
+  stroke: rgba(117, 97, 124, .22);
+}
+
+.countryScene.thailand .landmarkLine,
+.countryScene.thailand .palmLine {
+  stroke: rgba(49, 91, 125, .38);
+}
+
+.countryScene.paris .landmarkLine,
+.countryScene.paris .hillLine {
+  stroke: rgba(49, 91, 125, .42);
+}
+
+.countryScene.newyork .landmarkLine {
+  stroke: rgba(49, 91, 125, .43);
+}
+
+.countryScene.maldives .landmarkLine,
+.countryScene.maldives .palmLine {
+  stroke: rgba(52, 124, 118, .38);
+}
+
+.countryScene.tanzania .landmarkLine,
+.countryScene.tanzania .palmLine {
+  stroke: rgba(49, 91, 125, .38);
+}
+
+.countryScene.tanzania .mapLine {
+  stroke: rgba(117, 97, 124, .22);
+}
+
+.visaStamp {
+  left: auto;
+  right: clamp(34px, 4vw, 72px);
+  top: clamp(54px, 5.4vw, 94px);
+  width: min(48%, 340px);
+  min-height: clamp(112px, 10.5vw, 178px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2px, .3vw, 5px);
+  padding: clamp(12px, 1.2vw, 20px);
+  border-width: 3px;
+  border-radius: 22px;
+  transform: rotate(4deg);
+  font-size: clamp(8px, .62vw, 12px);
+  letter-spacing: .09em;
+  color: #315b7d;
+  background:
+    radial-gradient(circle at 18% 22%, transparent 0 2px, currentColor 2px 3px, transparent 4px),
+    radial-gradient(circle at 72% 68%, transparent 0 2px, currentColor 2px 3px, transparent 4px),
+    repeating-linear-gradient(90deg, transparent 0 7px, rgba(255, 255, 255, .22) 7px 9px);
+  background-size: 18px 16px, 22px 18px, auto;
+  box-shadow:
+    inset 0 0 0 2px rgba(245, 237, 218, .48),
+    inset 0 0 0 6px currentColor;
+  filter: contrast(.92);
+  clip-path: polygon(8% 0, 92% 0, 100% 16%, 100% 84%, 92% 100%, 8% 100%, 0 84%, 0 16%);
+}
+
+.visaStamp::before,
+.visaStamp::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.visaStamp::before {
+  inset: clamp(7px, .65vw, 12px);
+  border: 1.5px dashed currentColor;
+  border-radius: inherit;
+  opacity: .62;
+}
+
+.visaStamp::after {
+  inset: 0;
+  opacity: .26;
+  background:
+    linear-gradient(100deg, transparent 0 28%, rgba(245, 237, 218, .72) 29% 31%, transparent 32%),
+    radial-gradient(circle at 33% 58%, rgba(245, 237, 218, .82) 0 2px, transparent 3px),
+    radial-gradient(circle at 74% 34%, rgba(245, 237, 218, .75) 0 1px, transparent 2px);
+  mix-blend-mode: screen;
+}
+
+.visaStamp strong {
+  font-size: clamp(17px, 2vw, 36px);
+  font-family: "Courier New", Inter, Arial, sans-serif;
+  letter-spacing: .1em;
+  line-height: .95;
+  text-shadow: .5px 0 currentColor;
+}
+
+.visaStamp.blue {
+  transform: rotate(-5deg);
+}
+
+.visaStamp span {
+  font-family: "Courier New", Inter, Arial, sans-serif;
+  font-weight: 900;
+}
+
+.visaStamp.france {
+  color: #5d7286;
+  width: min(45%, 320px);
+  min-height: clamp(106px, 9.4vw, 162px);
+  border-radius: 46% / 28%;
+  transform: rotate(-4deg);
+  clip-path: polygon(14% 0, 86% 0, 100% 19%, 100% 81%, 86% 100%, 14% 100%, 0 81%, 0 19%);
+}
+
+.visaStamp.france strong:first-of-type {
+  font-size: clamp(30px, 3.2vw, 58px);
+}
+
+.visaStamp.france::before {
+  border-style: solid;
+  border-radius: 46% / 28%;
+}
+
+.visaStamp.france::after {
+  background:
+    linear-gradient(100deg, transparent 0 24%, rgba(245, 237, 218, .8) 25% 29%, transparent 30%),
+    radial-gradient(circle at 66% 27%, rgba(245, 237, 218, .8) 0 2px, transparent 3px);
+}
+
+.visaStamp.japan {
+  color: #c4564b;
+  width: min(43%, 305px);
+  aspect-ratio: 1;
+  min-height: 0;
+  border-radius: 50%;
+  transform: rotate(8deg);
+  clip-path: none;
+  box-shadow:
+    inset 0 0 0 2px rgba(245, 237, 218, .5),
+    inset 0 0 0 8px currentColor,
+    inset 0 0 0 12px rgba(245, 237, 218, .5);
+}
+
+.visaStamp.japan::before {
+  border-radius: 50%;
+  border-style: dashed;
+}
+
+.visaStamp.japan strong {
+  font-size: clamp(22px, 2.5vw, 44px);
+}
+
+.visaStamp.japan span:first-child::before {
+  content: '✈ ';
+}
+
+.visaStamp.brazil {
+  color: #667585;
+  width: min(43%, 318px);
+  min-height: clamp(120px, 11vw, 188px);
+  border-radius: 0;
+  transform: rotate(7deg);
+  clip-path: polygon(50% 0, 100% 86%, 88% 100%, 12% 100%, 0 86%);
+  padding-top: clamp(28px, 3vw, 50px);
+  box-shadow:
+    inset 0 0 0 2px rgba(245, 237, 218, .5),
+    inset 0 0 0 5px currentColor;
+}
+
+.visaStamp.brazil::before {
+  inset: clamp(12px, 1.1vw, 19px) clamp(14px, 1.4vw, 24px);
+  border-radius: 0;
+  border-style: solid;
+  clip-path: polygon(50% 0, 100% 86%, 88% 100%, 12% 100%, 0 86%);
+}
+
+.visaStamp.brazil strong:first-of-type {
+  font-size: clamp(26px, 2.7vw, 50px);
+}
+
+.visaStamp.thailand {
+  color: #75617c;
+  width: min(48%, 340px);
+  min-height: clamp(106px, 9.2vw, 158px);
+  border-radius: 7px;
+  transform: rotate(-6deg);
+  clip-path: polygon(6% 0, 94% 0, 100% 12%, 100% 88%, 94% 100%, 6% 100%, 0 88%, 0 12%);
+}
+
+.visaStamp.thailand strong:first-of-type {
+  font-size: clamp(24px, 2.55vw, 48px);
+}
+
+.visaStamp.thailand span:first-child::after {
+  content: '  ✈';
+}
+
+.visaStamp.paris {
+  color: #315b7d;
+  width: min(50%, 360px);
+  min-height: clamp(116px, 10.2vw, 174px);
+  border-radius: 7px;
+  transform: rotate(-4deg);
+  clip-path: polygon(8% 0, 92% 0, 100% 13%, 100% 87%, 92% 100%, 8% 100%, 0 87%, 0 13%);
+}
+
+.visaStamp.paris strong:first-of-type {
+  font-size: clamp(30px, 3.4vw, 60px);
+}
+
+.visaStamp.newyork {
+  color: #2e8cca;
+  width: min(48%, 350px);
+  min-height: clamp(108px, 9.5vw, 164px);
+  border-radius: 42% / 24%;
+  transform: rotate(3deg);
+  clip-path: polygon(12% 0, 88% 0, 100% 20%, 100% 80%, 88% 100%, 12% 100%, 0 80%, 0 20%);
+}
+
+.visaStamp.newyork strong:first-of-type {
+  font-size: clamp(28px, 3vw, 56px);
+}
+
+.visaStamp.maldives {
+  color: #34a77c;
+  width: min(46%, 330px);
+  min-height: clamp(108px, 9.4vw, 160px);
+  border-radius: 8px;
+  transform: rotate(-6deg);
+  clip-path: polygon(7% 0, 93% 0, 100% 15%, 100% 85%, 93% 100%, 7% 100%, 0 85%, 0 15%);
+}
+
+.visaStamp.maldives strong:first-of-type {
+  font-size: clamp(24px, 2.7vw, 50px);
+}
+
+.visaStamp.tanzania {
+  color: #75617c;
+  width: min(43%, 318px);
+  min-height: clamp(120px, 11vw, 188px);
+  border-radius: 0;
+  transform: rotate(7deg);
+  clip-path: polygon(50% 0, 100% 86%, 88% 100%, 12% 100%, 0 86%);
+  padding-top: clamp(28px, 3vw, 50px);
+}
+
+.visaStamp.tanzania::before {
+  inset: clamp(12px, 1.1vw, 19px) clamp(14px, 1.4vw, 24px);
+  border-radius: 0;
+  border-style: solid;
+  clip-path: polygon(50% 0, 100% 86%, 88% 100%, 12% 100%, 0 86%);
+}
+
+.visaStamp.tanzania strong:first-of-type {
+  font-size: clamp(23px, 2.45vw, 46px);
+}
+
+.stampDate {
+  position: absolute;
+  z-index: 3;
+  right: clamp(72px, 7.7vw, 135px);
+  top: clamp(130px, 13vw, 214px);
+  color: currentColor;
+  font: 900 clamp(12px, 1vw, 18px) / 1 Inter, Montserrat, Arial, sans-serif;
+  letter-spacing: .08em;
+  opacity: .76;
+  transform: rotate(4deg);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.visaPage.japan .stampDate,
+.visaPage.brazil .stampDate,
+.visaPage.thailand .stampDate {
+  color: #a63e35;
+}
+
+.visaPage.france .stampDate,
+.visaPage.thailand .stampDate {
+  color: #315b7d;
+}
+
+.visaPage.paris .stampDate,
+.visaPage.newyork .stampDate {
+  color: #315b7d;
+}
+
+.visaPage.maldives .stampDate {
+  color: #34a77c;
+}
+
+.visaPage.tanzania .stampDate {
+  color: #75617c;
+}
+
+.visaPage.japan .stampDate {
+  right: clamp(86px, 8.5vw, 150px);
+  top: clamp(134px, 12.7vw, 205px);
+  transform: rotate(8deg);
+}
+
+.visaPage.brazil .stampDate {
+  right: clamp(88px, 9vw, 166px);
+  top: clamp(132px, 12.5vw, 210px);
+  transform: rotate(7deg);
+}
+
+.visaPage.thailand .stampDate {
+  right: clamp(90px, 9vw, 158px);
+  top: clamp(128px, 12.4vw, 202px);
+  transform: rotate(-6deg);
+}
+
+.visaPage.newyork .stampDate {
+  right: clamp(88px, 8.4vw, 150px);
+  top: clamp(130px, 12.4vw, 205px);
+  transform: rotate(3deg);
+}
+
+.visaPage.maldives .stampDate {
+  right: clamp(86px, 8.5vw, 154px);
+  top: clamp(128px, 12.2vw, 200px);
+  transform: rotate(-6deg);
+}
+
+.visaPage.tanzania .stampDate {
+  right: clamp(88px, 9vw, 166px);
+  top: clamp(132px, 12.5vw, 210px);
+  transform: rotate(7deg);
+}
+
+.secondaryStamp {
+  width: clamp(84px, 8vw, 142px);
+  right: auto;
+  left: 12%;
+  bottom: 28%;
+  border-width: 2px;
+  font-size: clamp(8px, .6vw, 11px);
+  opacity: .46;
+}
+
+.landmark {
+  left: auto;
+  right: 10%;
+  bottom: 11%;
+  color: rgba(47, 64, 83, .42);
+  font-family: "Segoe Print", "Bradley Hand", cursive;
+  font-size: clamp(18px, 1.6vw, 30px);
+  font-weight: 500;
+  letter-spacing: .02em;
+  transform: rotate(-9deg);
+}
+
+.visaLines {
+  left: 8%;
+  right: auto;
+  top: 12%;
+  width: 78%;
+  gap: 10px;
+  transform: rotate(-8deg);
+}
+
+.visaLines i {
+  height: 1px;
+  background: rgba(49, 91, 125, .14);
+}
+
+.geoNote {
+  left: 9%;
+  right: auto;
+  bottom: clamp(58px, 5vw, 88px);
+  max-width: 220px;
+  font-family: "Courier New", monospace;
+  font-size: clamp(7px, .58vw, 10px);
+}
+
+.countryNote {
+  left: 42%;
+  bottom: clamp(36px, 4vw, 68px);
+  max-width: 260px;
+  color: rgba(49, 65, 91, .72);
+  font-size: clamp(13px, 1.1vw, 20px);
+  line-height: 1.25;
+}
+
+.airRoute {
+  left: 10%;
+  right: 26%;
+  top: 58%;
+  border-top-color: rgba(49, 91, 125, .2);
+}
+
+.sceneSketch {
+  position: absolute;
+  left: 9%;
+  right: 7%;
+  bottom: 10%;
+  height: 38%;
+  opacity: .42;
+  border-bottom: 2px solid rgba(49, 91, 125, .28);
+  overflow: hidden;
+}
+
+.sceneSketch::before,
+.sceneSketch::after,
+.sceneSketch i {
+  content: '';
+  position: absolute;
+  display: block;
+  border-color: rgba(49, 91, 125, .42);
+}
+
+.sceneSketch.france::before {
+  left: 10%;
+  bottom: 0;
+  width: 42px;
+  height: 145px;
+  border-left: 2px solid rgba(49, 91, 125, .42);
+  border-right: 2px solid rgba(49, 91, 125, .32);
+  transform: skew(-10deg);
+}
+
+.sceneSketch.france::after {
+  left: 5%;
+  bottom: 0;
+  width: 120px;
+  height: 48px;
+  border-top: 2px solid rgba(49, 91, 125, .42);
+  transform: skew(-24deg);
+}
+
+.sceneSketch.japan::before {
+  left: 8%;
+  right: 8%;
+  bottom: 0;
+  height: 72%;
+  background:
+    linear-gradient(135deg, transparent 49%, rgba(49, 91, 125, .42) 50%, transparent 51%),
+    linear-gradient(45deg, transparent 49%, rgba(49, 91, 125, .34) 50%, transparent 51%);
+  clip-path: polygon(0 100%, 43% 18%, 55% 38%, 74% 0, 100% 100%);
+}
+
+.sceneSketch.brazil::before {
+  left: 48%;
+  bottom: 8%;
+  width: 42px;
+  height: 138px;
+  border-left: 2px solid rgba(49, 91, 125, .42);
+}
+
+.sceneSketch.brazil::after {
+  left: 38%;
+  bottom: 46%;
+  width: 130px;
+  border-top: 2px solid rgba(49, 91, 125, .38);
+}
+
+.sceneSketch.thailand::before {
+  left: 3%;
+  bottom: 0;
+  width: 180px;
+  height: 130px;
+  border-left: 2px solid rgba(49, 91, 125, .36);
+  border-radius: 54% 46% 0 0;
+  transform: rotate(-8deg);
+}
+
+.sceneSketch.thailand::after {
+  left: 38%;
+  bottom: 0;
+  width: 96px;
+  height: 120px;
+  border-left: 2px solid rgba(49, 91, 125, .34);
+  border-radius: 50% 50% 0 0;
+}
+
+.sceneSketch.paris::before {
+  left: 11%;
+  bottom: 0;
+  width: 44px;
+  height: 152px;
+  border-left: 2px solid rgba(49, 91, 125, .42);
+  border-right: 2px solid rgba(49, 91, 125, .32);
+  transform: skew(-10deg);
+}
+
+.sceneSketch.paris::after {
+  left: 4%;
+  bottom: 0;
+  width: 128px;
+  height: 52px;
+  border-top: 2px solid rgba(49, 91, 125, .42);
+  transform: skew(-24deg);
+}
+
+.sceneSketch.newyork::before {
+  left: 6%;
+  right: 7%;
+  bottom: 0;
+  height: 78%;
+  background:
+    linear-gradient(90deg, transparent 0 8%, rgba(49, 91, 125, .32) 8% 12%, transparent 12% 17%, rgba(49, 91, 125, .38) 17% 25%, transparent 25% 32%, rgba(49, 91, 125, .3) 32% 39%, transparent 39% 48%, rgba(49, 91, 125, .42) 48% 59%, transparent 59% 68%, rgba(49, 91, 125, .32) 68% 75%, transparent 75% 81%, rgba(49, 91, 125, .36) 81% 88%, transparent 88%),
+    linear-gradient(0deg, rgba(49, 91, 125, .36) 0 2px, transparent 2px);
+}
+
+.sceneSketch.newyork::after {
+  left: 9%;
+  right: 8%;
+  bottom: 0;
+  border-top: 2px solid rgba(49, 91, 125, .4);
+}
+
+.sceneSketch.maldives::before {
+  left: 7%;
+  bottom: 17%;
+  width: 180px;
+  height: 54px;
+  border-top: 2px solid rgba(52, 124, 118, .4);
+  border-radius: 50%;
+}
+
+.sceneSketch.maldives::after {
+  right: 12%;
+  bottom: 0;
+  width: 120px;
+  height: 128px;
+  border-left: 2px solid rgba(52, 124, 118, .36);
+  transform: rotate(12deg);
+}
+
+.sceneSketch.tanzania::before {
+  left: 5%;
+  right: 6%;
+  bottom: 0;
+  height: 80%;
+  background:
+    linear-gradient(135deg, transparent 49%, rgba(49, 91, 125, .38) 50%, transparent 51%),
+    linear-gradient(45deg, transparent 49%, rgba(49, 91, 125, .32) 50%, transparent 51%);
+  clip-path: polygon(0 100%, 40% 14%, 56% 42%, 72% 20%, 100% 100%);
+}
+
+.sceneSketch.tanzania::after {
+  right: 8%;
+  bottom: 0;
+  width: 84px;
+  height: 114px;
+  border-left: 2px solid rgba(49, 91, 125, .34);
+  border-radius: 50% 50% 0 0;
+}
+
+.resultLeft {
+  height: calc(100% - 42px);
+  justify-content: center;
+  gap: clamp(16px, 1.5vw, 26px);
+}
+
+.eyebrow {
+  font-size: clamp(10px, .75vw, 13px);
+  letter-spacing: .1em;
+}
+
+.resultLeft > .eyebrow {
+  position: relative;
+  top: clamp(22px, 2vw, 32px);
+}
+
+.resultLeft .profileStamp {
+  width: min(86%, 520px);
+  margin: 0;
+  transform: translateY(-130px) scale(2.15) rotate(-8deg);
+}
+
+.resultLeft .profileStamp strong {
+  font-size: clamp(35px, 4vw, 72px);
+}
+
+.resultCopy {
+  max-width: 560px;
+}
+
+.resultLeft p,
+.destinationDetails p {
+  font-size: clamp(12px, .95vw, 17px);
+  line-height: 1.43;
+}
+
+.leftTraits {
+  margin-top: clamp(14px, 1.3vw, 22px);
+}
+
+.traits span {
+  min-width: 120px;
+  font-size: clamp(11px, .82vw, 15px);
+}
+
+.resultRight {
+  justify-content: flex-start;
+  align-items: flex-end;
+  padding-top: clamp(62px, 6vw, 104px);
+  text-align: center;
+}
+
+.resultRight .destinationStamp {
+  margin-right: clamp(28px, 3vw, 54px);
+}
+
+.destinationStamp {
+  width: min(58%, 360px);
+  min-height: auto;
+  aspect-ratio: 1.42 / .86;
+  border-radius: 5px;
+  transform: translateY(-130px) scale(2.05) rotate(-7deg);
+}
+
+.resultStamp {
+  border-width: 3px;
+  padding: clamp(12px, 1.2vw, 20px);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 16% 24%, transparent 0 2px, currentColor 2px 3px, transparent 4px),
+    radial-gradient(circle at 70% 66%, transparent 0 2px, currentColor 2px 3px, transparent 4px),
+    repeating-linear-gradient(90deg, transparent 0 8px, rgba(255, 255, 255, .18) 8px 10px);
+  box-shadow:
+    inset 0 0 0 2px rgba(245, 237, 218, .48),
+    inset 0 0 0 7px currentColor;
+  clip-path: polygon(5% 0, 95% 0, 100% 12%, 100% 88%, 95% 100%, 5% 100%, 0 88%, 0 12%);
+}
+
+.resultStamp strong {
+  font-size: clamp(25px, 3vw, 54px);
+  font-family: "Courier New", Inter, Arial, sans-serif;
+  letter-spacing: .03em;
+  text-shadow: .5px 0 currentColor;
+}
+
+.resultStamp::before {
+  inset: clamp(7px, .7vw, 12px);
+  border: 1.5px dashed currentColor;
+  border-radius: inherit;
+  opacity: .64;
+}
+
+.resultStamp::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: .24;
+  background:
+    linear-gradient(105deg, transparent 0 22%, rgba(245, 237, 218, .78) 23% 27%, transparent 28%),
+    radial-gradient(circle at 30% 50%, rgba(245, 237, 218, .75) 0 2px, transparent 3px),
+    radial-gradient(circle at 78% 38%, rgba(245, 237, 218, .72) 0 1px, transparent 2px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.profileStamp {
+  color: #b94941;
+}
+
+.destinationStamp {
+  color: #2e8cca;
+  box-shadow:
+    inset 0 0 0 2px rgba(245, 237, 218, .48),
+    inset 0 0 0 6px currentColor;
+  clip-path: polygon(12% 0, 88% 0, 100% 22%, 100% 78%, 88% 100%, 12% 100%, 0 78%, 0 22%);
+}
+
+.destinationStamp::before {
+  border-style: solid;
+}
+
+.resultSketch {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 18%;
+  height: 34%;
+  opacity: .34;
+  border-bottom: 2px solid rgba(49, 91, 125, .26);
+}
+
+.resultSketch::before {
+  content: '';
+  position: absolute;
+  left: 14%;
+  bottom: 0;
+  width: 160px;
+  height: 180px;
+  border-left: 2px solid rgba(49, 91, 125, .36);
+  border-radius: 50% 50% 0 0;
+  transform: rotate(-9deg);
+}
+
+.resultSketch::after {
+  content: '';
+  position: absolute;
+  right: 10%;
+  bottom: 0;
+  width: 90px;
+  height: 120px;
+  border-left: 2px solid rgba(49, 91, 125, .32);
+  border-radius: 50% 50% 0 0;
+}
+
+.resultNote {
+  right: 14%;
+  bottom: 12%;
+  color: rgba(49, 65, 91, .7);
+  font-size: clamp(14px, 1.3vw, 24px);
+}
+
+.destinationDetails {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: clamp(20px, 2.2vw, 40px);
+  min-height: 0;
+  text-align: center;
+}
+
+.destinationDetails p {
+  display: none;
+}
+
+.turnPage {
+  top: 0;
+  bottom: 0;
+  border-radius: 4px 16px 16px 4px;
+}
+
+.turnFace {
+  border-radius: 4px 16px 16px 4px;
+  background-color: #efe4cf;
+}
+
+@media (max-height: 780px) {
+  .introContent h1 {
+    font-size: clamp(34px, 4vw, 64px);
+  }
+
+  .questionSide h2 {
+    font-size: clamp(19px, 1.55vw, 28px);
+  }
+
+  .answers button {
+    min-height: 62px;
+  }
+
+  .visaStamp {
+    top: 46px;
+  }
+}
+
+/* Deep passport realism pass: asset-based textures, maps, imperfect stamps. */
+.passportPage {
+  background:
+    url('/textures/paper-grain.svg'),
+    url('/textures/security-pattern.svg'),
+    url('/textures/guilloche.svg'),
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,.34), transparent 24%),
+    radial-gradient(circle at 84% 86%, rgba(103,70,40,.16), transparent 30%),
+    linear-gradient(105deg, rgba(123,82,44,.13), transparent 34%, rgba(255,255,255,.14)),
+    #efe4cf;
+  background-size: 360px 360px, 330px 330px, 100% 100%, auto, auto, auto, auto;
+}
+
+.passportPage::before {
+  opacity: .62;
+  background:
+    radial-gradient(circle at 11% 15%, rgba(89, 58, 30, .12) 0 1px, transparent 2px),
+    radial-gradient(circle at 78% 22%, rgba(49, 91, 125, .10) 0 1px, transparent 2px),
+    linear-gradient(90deg, transparent 0 12%, rgba(49,91,125,.045) 12.2%, transparent 12.6%),
+    repeating-linear-gradient(7deg, rgba(49,91,125,.022) 0 1px, transparent 1px 8px);
+  background-size: 8px 8px, 13px 13px, auto, auto;
+}
+
+.passportPage::after {
+  background:
+    linear-gradient(90deg, rgba(42, 27, 15, .24), transparent 11%),
+    radial-gradient(circle at 50% 4%, rgba(255,255,255,.18), transparent 34%),
+    radial-gradient(circle at 94% 92%, rgba(93, 61, 33, .10), transparent 32%);
+}
+
+.rightPage::after {
+  background:
+    linear-gradient(270deg, rgba(255,255,255,.13), transparent 48%),
+    linear-gradient(90deg, rgba(42,27,15,.26), transparent 12%),
+    radial-gradient(circle at 6% 48%, rgba(45,27,13,.22), transparent 18%);
+}
+
+.binding {
+  background:
+    linear-gradient(90deg, rgba(9,6,4,.48), rgba(75,52,31,.25) 20%, rgba(255,247,222,.34) 45%, rgba(36,23,13,.52) 62%, rgba(7,5,4,.55)),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.14) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.12) 0 2px, transparent 2px 5px);
+  box-shadow: 0 0 30px rgba(26, 15, 8, .42), inset 0 0 12px rgba(0,0,0,.24);
+}
+
+.passportWatermark {
+  opacity: .42;
+}
+
+.mapAsset {
+  position: absolute;
+  z-index: 1;
+  left: 8%;
+  top: 17%;
+  width: 61%;
+  height: 62%;
+  object-fit: contain;
+  opacity: .115;
+  mix-blend-mode: multiply;
+  filter: sepia(.24) saturate(.74) contrast(1.15);
+  pointer-events: none;
+}
+
+.engravingAsset {
+  position: absolute;
+  z-index: 1;
+  left: 9%;
+  bottom: 9%;
+  width: 50%;
+  height: 48%;
+  object-fit: contain;
+  opacity: .25;
+  mix-blend-mode: multiply;
+  filter: sepia(.25) saturate(.7) contrast(1.08);
+  pointer-events: none;
+}
+
+.japan .engravingAsset,
+.maldives .engravingAsset,
+.tanzania .engravingAsset {
+  width: 58%;
+  left: 7%;
+}
+
+.stampArtwork {
+  position: absolute;
+  inset: -9%;
+  width: 118%;
+  height: 118%;
+  object-fit: contain;
+  opacity: .88;
+  mix-blend-mode: multiply;
+  filter: contrast(1.18) saturate(.9);
+  pointer-events: none;
+}
+
+.visaStamp {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.visaStamp::before,
+.visaStamp::after {
+  display: none;
+}
+
+.visaStamp > span,
+.visaStamp > strong {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+}
+
+.visaStamp.paris,
+.visaStamp.japan,
+.visaStamp.maldives,
+.visaStamp.tanzania {
+  clip-path: none;
+}
+
+.visaStamp.paris {
+  width: min(53%, 390px);
+  min-height: clamp(130px, 12vw, 205px);
+  transform: rotate(-5deg);
+}
+
+.visaStamp.japan {
+  width: min(43%, 315px);
+  aspect-ratio: 1;
+  transform: rotate(7deg);
+}
+
+.visaStamp.maldives {
+  width: min(52%, 370px);
+  min-height: clamp(118px, 10.5vw, 182px);
+  transform: rotate(-5deg);
+}
+
+.visaStamp.tanzania {
+  width: min(46%, 335px);
+  min-height: clamp(132px, 12vw, 210px);
+  transform: rotate(7deg);
+  padding-top: 0;
+}
+
+.secondaryStampAsset {
+  position: absolute;
+  z-index: 3;
+  right: 7%;
+  bottom: 19%;
+  width: clamp(118px, 12vw, 205px);
+  opacity: .42;
+  mix-blend-mode: multiply;
+  transform: rotate(11deg);
+  filter: contrast(1.08) saturate(.78);
+  pointer-events: none;
+}
+
+.japan .secondaryStampAsset {
+  right: 11%;
+  bottom: 16%;
+  width: clamp(116px, 11vw, 188px);
+  transform: rotate(-12deg);
+}
+
+.maldives .secondaryStampAsset {
+  right: 8%;
+  bottom: 15%;
+  transform: rotate(7deg);
+}
+
+.tanzania .secondaryStampAsset {
+  right: 11%;
+  bottom: 16%;
+  transform: rotate(-8deg);
+}
+
+.secondaryStamp {
+  opacity: .18;
+}
+
+.stampDate {
+  opacity: .54;
+  text-shadow: 0 0 1px currentColor;
+}
+
+.visaPage::before {
+  content: 'LESBOSS VISA VISA VISA VISA VISA VISA PASSEPORT VOYAGEUR MICROTEXT';
+  position: absolute;
+  z-index: 1;
+  left: 6%;
+  right: 6%;
+  bottom: 5%;
+  color: rgba(24,23,20,.25);
+  font: 700 clamp(7px, .62vw, 10px) "Courier New", monospace;
+  letter-spacing: .28em;
+  white-space: nowrap;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.visaLines i {
+  background: rgba(49,91,125,.105);
+}
+
+.geoNote {
+  opacity: .72;
+}
+
+.countryNote {
+  opacity: .8;
+}
+
+.homeVisa::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: 8%;
+  top: 15%;
+  width: 62%;
+  height: 62%;
+  background: url('/maps/savoie.svg') center / contain no-repeat;
+  opacity: .12;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.homeVisa::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: 8%;
+  bottom: 7%;
+  width: 54%;
+  height: 42%;
+  background: url('/illustrations/lac-bourget.svg') center / contain no-repeat;
+  opacity: .25;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.aixStamp {
+  background: url('/stamps/savoie.svg') center / contain no-repeat;
+  border: 0;
+  color: transparent;
+  width: min(46%, 330px);
+  min-height: clamp(100px, 9vw, 155px);
+  opacity: .72;
+}
+
+.aixStamp strong {
+  color: transparent;
+}
+
+.passportPage.watermark-aix::before,
+.passportPage.watermark-paris::before,
+.passportPage.watermark-japan::before,
+.passportPage.watermark-maldives::before,
+.passportPage.watermark-tanzania::before,
+.passportPage.watermark-results::before {
+  opacity: .42;
+  background:
+    linear-gradient(90deg, rgba(245, 237, 218, .26), rgba(245, 237, 218, .08)),
+    var(--page-watermark-image, url('/illustrations/windalps-watermark.png')),
+    radial-gradient(circle at 14% 18%, rgba(89, 58, 30, .10) 0 1px, transparent 2px),
+    repeating-linear-gradient(7deg, rgba(49,91,125,.02) 0 1px, transparent 1px 8px);
+  background-size: auto, 200% 100%, 8px 8px, auto;
+  background-repeat: no-repeat, no-repeat, repeat, repeat;
+  mix-blend-mode: multiply;
+  filter: sepia(.08) saturate(.72) contrast(.96);
+}
+
+.visaPage.paris .mapAsset,
+.visaPage.paris .engravingAsset,
+.visaPage.paris .countryShape,
+.visaPage.paris .sceneSketch,
+.visaPage.paris .visaLines,
+.visaPage.paris .airRoute,
+.visaPage.paris .visaStamp,
+.visaPage.paris .stampDate,
+.visaPage.paris .secondaryStampAsset,
+.visaPage.paris .secondaryStamp,
+.watermark-paris .passportWatermark .wmParis {
+  display: none;
+}
+
+.visaPage:is(.japan, .maldives, .tanzania) :is(.mapAsset, .engravingAsset, .countryShape, .sceneSketch, .visaLines, .airRoute, .visaStamp, .stampDate, .secondaryStampAsset, .secondaryStamp),
+.watermark-tanzania .passportWatermark .wmTanzania,
+.watermark-japan .passportWatermark .wmJapan,
+.watermark-maldives .passportWatermark .wmMaldives {
+  display: none;
+}
+
+.chamberyStamp,
+.homeTravelStamp,
+.localTravelStamp {
+  position: absolute;
+  z-index: 3;
+  overflow: hidden;
+  opacity: .72;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.home-orange {
+  width: 31%;
+  aspect-ratio: 1;
+  top: 5%;
+  left: 8%;
+  clip-path: circle(49%);
+  transform: rotate(-8deg);
+}
+
+.home-purple {
+  width: 32%;
+  aspect-ratio: 270 / 218;
+  top: 12%;
+  right: 8%;
+  transform: rotate(9deg);
+}
+
+.home-blue {
+  width: 29%;
+  aspect-ratio: 255 / 260;
+  top: 39%;
+  left: 12%;
+  transform: rotate(-12deg);
+}
+
+.home-green {
+  width: 27%;
+  aspect-ratio: 145 / 132;
+  top: 42%;
+  right: 9%;
+  transform: rotate(7deg);
+}
+
+.chamberyStampOrange {
+  width: 36%;
+  aspect-ratio: 1;
+  top: 17%;
+  left: 12%;
+  clip-path: circle(49%);
+  transform: rotate(-8deg);
+}
+
+.chamberyStampPurple {
+  width: 38%;
+  aspect-ratio: 270 / 218;
+  top: 49%;
+  right: 9%;
+  transform: rotate(8deg);
+}
+
+.localStampSingle {
+  width: 37%;
+  aspect-ratio: 220 / 245;
+  top: 26%;
+  left: 31%;
+  clip-path: ellipse(49% 49%);
+  transform: rotate(-9deg);
+}
+
+.localStampFirst {
+  width: 39%;
+  aspect-ratio: 250 / 215;
+  top: 18%;
+  left: 10%;
+  transform: rotate(-8deg);
+}
+
+.localStampSecond {
+  width: 30%;
+  aspect-ratio: 145 / 132;
+  top: 48%;
+  right: 12%;
+  transform: rotate(9deg);
+}
+
+.passportPage.watermark-paris {
+  --page-watermark-image: url('/illustrations/page-2-watermark.png');
+}
+
+.passportPage.watermark-japan {
+  --page-watermark-image: url('/illustrations/page-3-watermark.png');
+}
+
+.passportPage.watermark-maldives {
+  --page-watermark-image: url('/illustrations/page-4-abbaye-watermark.png');
+}
+
+.mountainStampFirst {
+  width: 33%;
+  aspect-ratio: 255 / 260;
+  top: 15%;
+  left: 9%;
+  transform: rotate(-9deg);
+}
+
+.mountainStampSecond {
+  width: 24%;
+  aspect-ratio: 158 / 195;
+  top: 25%;
+  right: 12%;
+  transform: rotate(8deg);
+}
+
+.mountainStampThird {
+  width: 32%;
+  aspect-ratio: 184 / 136;
+  top: 55%;
+  left: 29%;
+  transform: rotate(-6deg);
+}
+
+.passportPage.watermark-tanzania {
+  --page-watermark-image: url('/illustrations/results-watermark.png');
+}
+
+.passportPage.watermark-results {
+  --page-watermark-image: url('/illustrations/results-annecy-watermark.png');
+}
+
+.passportPage.watermark-aix.leftPage::before,
+.passportPage.watermark-paris.leftPage::before,
+.passportPage.watermark-japan.leftPage::before,
+.passportPage.watermark-maldives.leftPage::before,
+.passportPage.watermark-tanzania.leftPage::before,
+.passportPage.watermark-results.leftPage::before {
+  background-position: center, left center, 0 0, 0 0;
+}
+
+.passportPage.watermark-aix.rightPage::before,
+.passportPage.watermark-paris.rightPage::before,
+.passportPage.watermark-japan.rightPage::before,
+.passportPage.watermark-maldives.rightPage::before,
+.passportPage.watermark-tanzania.rightPage::before,
+.passportPage.watermark-results.rightPage::before {
+  background-position: center, right center, 0 0, 0 0;
+}
+
+.passportPage.watermark-aix .passportWatermark,
+.passportPage.watermark-paris .passportWatermark,
+.passportPage.watermark-japan .passportWatermark,
+.passportPage.watermark-maldives .passportWatermark,
+.passportPage.watermark-tanzania .passportWatermark,
+.passportPage.watermark-results .passportWatermark {
+  opacity: .12;
+}
+
+.homeVisa::before,
+.homeVisa::after,
+.aixScene {
+  display: none;
+}
+
+.windalpsEntryStamp {
+  position: absolute;
+  z-index: 4;
+  right: clamp(38px, 5vw, 82px);
+  top: clamp(118px, 12vw, 210px);
+  width: clamp(128px, 15vw, 250px);
+  opacity: .66;
+  transform: rotate(-4deg);
+  mix-blend-mode: multiply;
+  filter: contrast(1.08) saturate(.82);
+  pointer-events: none;
+}
+
+.resultStamp {
+  border: 0;
+  box-shadow: none;
+  background:
+    radial-gradient(circle at 16% 24%, transparent 0 2px, currentColor 2px 3px, transparent 4px),
+    radial-gradient(circle at 70% 66%, transparent 0 2px, currentColor 2px 3px, transparent 4px),
+    repeating-linear-gradient(90deg, transparent 0 8px, rgba(255, 255, 255, .26) 8px 10px);
+  background-size: 18px 16px, 22px 18px, auto;
+  mix-blend-mode: multiply;
+  filter: contrast(1.15) saturate(.9);
+}
+
+.resultStamp::before {
+  border-width: 3px;
+  opacity: .72;
+  filter: url('#none');
+}
+
+.resultStamp::after {
+  opacity: .32;
+}
+
+.resultStamp {
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  clip-path: none;
+}
+
+.resultStamp::before,
+.resultStamp::after {
+  display: none;
+}
+
+.stampFilterDefs {
+  position: absolute;
+}
+
+.resultStampInk {
+  position: relative;
+  width: 100%;
+  padding: 15% 9% 12%;
+  text-align: center;
+}
+
+.resultStampFrame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  pointer-events: none;
+}
+
+.resultStamp span {
+  position: absolute;
+  top: 10%;
+  left: 9%;
+  right: 9%;
+  font-family: 'Courier New', monospace;
+  letter-spacing: .12em;
+}
+
+.resultLeft .profileStamp strong,
+.resultStamp strong {
+  font: 900 clamp(23px, 2.65vw, 44px) / 1.08 'Courier New', monospace;
+  text-shadow: none;
+  margin: 5px 0 15%;
+  overflow-wrap: anywhere;
+}
+
+.resultStamp small {
+  font: 700 clamp(9px, .75vw, 12px) / 1.3 'Courier New', monospace;
+  letter-spacing: .06em;
+}
+
+.resultStamp em {
+  position: static;
+  margin-top: 5px;
+  font-family: 'Courier New', monospace;
+}
+
+.resultRight .destinationStamp {
+  width: min(76%, 400px);
+  aspect-ratio: auto;
+  color: #315b7d;
+}
+
+.introText {
+  margin: clamp(8px, .9vw, 14px) 0 0;
+  max-width: 480px;
+  color: rgba(24, 23, 20, .68);
+  font-size: clamp(11px, .86vw, 15px);
+  font-weight: 700;
+  line-height: 1.42;
+}
+
+.answers button.selected {
+  border-color: rgba(49, 91, 125, .65);
+  background: rgba(231, 237, 232, .74);
+  box-shadow: inset 0 0 0 2px rgba(49, 91, 125, .16), 0 3px 8px rgba(67, 45, 26, .12);
+}
+
+.destinationDetails p {
+  display: block;
+  max-width: 620px;
+  margin-bottom: clamp(12px, 1.1vw, 18px);
+}
+
+@media (max-height: 820px) {
+  .resultLeft blockquote,
+  .destinationDetails p {
+    font-size: clamp(11px, .82vw, 14px);
+    line-height: 1.32;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}

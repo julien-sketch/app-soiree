@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 118">
+  <filter id="rough">
+    <feTurbulence type="fractalNoise" baseFrequency=".06" numOctaves="4" seed="56"/>
+    <feDisplacementMap in="SourceGraphic" scale="1.9"/>
+  </filter>
+  <g filter="url(#rough)" fill="none" stroke="#53508e" opacity=".78">
+    <path d="M18 17h214v84H18z" stroke-width="4"/>
+    <path d="M31 30h187v58H31z" stroke-width="1.8" stroke-dasharray="7 6"/>
+    <path d="M70 21v76M171 21v76M31 58h187" stroke-width="1.6" opacity=".72"/>
+    <path d="M41 67h28M178 67h32" stroke-width="2"/>
+  </g>
+  <g fill="#53508e" font-family="Courier New, monospace" text-anchor="middle" opacity=".84">
+    <text x="125" y="27" font-size="9" font-weight="700">IDENTITY CONTROL · ARRIVAL</text>
+    <text x="125" y="52" font-size="21" font-weight="900">AUT TURK</text>
+    <text x="125" y="78" font-size="18" font-weight="700">02.06.18 14</text>
+    <text x="125" y="96" font-size="14" font-weight="700">343.01</text>
+    <text x="48" y="53" font-size="14">TR</text>
+    <text x="48" y="83" font-size="20">→</text>
+    <text x="197" y="82" font-size="24">✈</text>
+  </g>
+  <g stroke="#f1e7d1" stroke-width="7" opacity=".26">
+    <path d="M23 22c37 9 75 9 114 0M82 92c42-8 84-7 126 4"/>
+  </g>
+</svg>
