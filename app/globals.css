@@ -3040,6 +3040,20 @@ body {
   color: #315b7d;
 }
 
+.profileComparison {
+  min-height: 2.8em;
+  max-width: 430px;
+  margin: 0 auto clamp(10px, 1vw, 16px);
+  color: #315b7d;
+  font: 700 clamp(10px, .85vw, 14px) / 1.4 'Courier New', monospace;
+  text-align: center;
+}
+
+.profileComparison strong {
+  font-size: 1.3em;
+  white-space: nowrap;
+}
+
 .introText {
   margin: clamp(8px, .9vw, 14px) 0 0;
   max-width: 480px;

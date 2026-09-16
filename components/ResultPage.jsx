@@ -21,7 +21,7 @@ export function ResultLeft({ profile, showDetails, stampStage }) {
   )
 }
 
-export function ResultRight({ destination, stampStage, onReset }) {
+export function ResultRight({ destination, stampStage, onReset, comparison }) {
   return (
     <div className={`resultRight ${stampStage > 0 ? 'shake' : ''}`}>
       <ResultStamp
@@ -34,6 +34,10 @@ export function ResultRight({ destination, stampStage, onReset }) {
       <div className="resultSketch" aria-hidden="true" />
       <div className={`destinationDetails ${stampStage > 1 ? 'show' : ''}`}>
         <p>{destination.description}</p>
+        <div className="profileComparison" role="status" aria-live="polite" aria-atomic="true">
+          {comparison?.status === 'loading' && <span>Comparaison avec les autres Boss...</span>}
+          {comparison?.status === 'ready' && <span><strong>{comparison.percentage} %</strong> des Boss ont le même profil que vous.</span>}
+        </div>
         <button className="secondary" onClick={onReset}>FAIS TESTER UN AUTRE BOSS <span>→</span></button>
       </div>
     </div>

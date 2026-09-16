@@ -3,6 +3,8 @@
 import { useMemo, useRef, useState } from 'react'
 import { questions } from '../data/questions'
 import { addScores, calculateDestination, calculateProfile } from '../lib/scoring'
+import { getSupabaseClient } from '../lib/supabase'
+import { createQuizSubmission } from '../lib/quizResults'
 import Passport from '../components/Passport'
 import { HomeLeft, HomeVisa } from '../components/HomePage'
 import QuestionPage from '../components/QuestionPage'
@@ -18,6 +20,9 @@ export default function Home() {
   const [result, setResult] = useState(null)
   const [showProfileStamp, setShowProfileStamp] = useState(false)
   const [showDestinationStamp, setShowDestinationStamp] = useState(false)
+  const [profileComparison, setProfileComparison] = useState(null)
+  const submission = useRef(null)
+  const choosing = useRef(false)
   const timer = useRef(null)
 
   const previewResult = useMemo(() => ({
@@ -30,7 +35,8 @@ export default function Home() {
   const stampStage = (showProfileStamp ? 1 : 0) + (showDestinationStamp ? 1 : 0)
 
   function choose(answer) {
-    if (isAnimating || finished) return
+    if (choosing.current || isAnimating || finished) return
+    choosing.current = true
 
     const nextScores = addScores(scores, answer.scores)
     setScores(nextScores)
@@ -40,9 +46,22 @@ export default function Home() {
 
     timer.current = window.setTimeout(() => {
       if (step === questions.length - 1) {
-        setResult({
+        const completedResult = {
           profile: calculateProfile(nextScores),
           destination: calculateDestination(nextScores),
+        }
+        setResult(completedResult)
+        setProfileComparison({ status: 'loading' })
+        if (!submission.current) submission.current = createQuizSubmission(getSupabaseClient)
+        const currentSubmission = submission.current
+        currentSubmission(completedResult).then((comparison) => {
+          // A late response from a previous game must not update the new game.
+          if (submission.current === currentSubmission) {
+            setProfileComparison({ status: 'ready', ...comparison })
+          }
+        }).catch((error) => {
+          console.error('[quiz_results] Enregistrement ou statistiques indisponibles :', error)
+          if (submission.current === currentSubmission) setProfileComparison({ status: 'unavailable' })
         })
         setIsAnimating(false)
         window.setTimeout(() => setShowProfileStamp(true), 420)
@@ -50,12 +69,16 @@ export default function Home() {
       } else {
         setStep((currentStep) => currentStep + 1)
         setIsAnimating(false)
+        choosing.current = false
       }
     }, 660)
   }
 
   function reset() {
     window.clearTimeout(timer.current)
+    submission.current = null
+    choosing.current = false
+    setProfileComparison(null)
     setStarted(false)
     setStep(0)
     setScores({})
@@ -75,7 +98,7 @@ export default function Home() {
   const rightPage = !started
     ? <HomeVisa />
     : finished
-      ? <ResultRight destination={activeResult.destination} stampStage={stampStage} onReset={reset} />
+      ? <ResultRight destination={activeResult.destination} stampStage={stampStage} onReset={reset} comparison={profileComparison} />
       : <VisaPage visa={questions[step].visa} step={step} />
 
   const turnLabel = step === questions.length - 1 ? 'RÉSULTAT' : `QUESTION ${Math.min(step + 2, questions.length)}/4`
