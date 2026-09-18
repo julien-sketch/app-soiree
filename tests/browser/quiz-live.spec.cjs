@@ -31,12 +31,23 @@ test('two real completed games create two rows and display database counts', asy
       await expect(page.getByText(`QUESTION ${step}/4`, { exact: true })).toBeVisible()
       await page.locator('.answers button').first().click()
     }
-    await expect(page.getByRole('status')).toHaveText(/\d+ % des Boss ont le même profil que vous\./)
+    await expect(page.getByRole('progressbar')).toHaveCount(6, { timeout: 15000 })
     expect(writes).toHaveLength(game)
     const total = await count()
-    const same = await count(writes[game - 1].profile)
+    const ids = ['commandant', 'explorateur', 'jet-setter', 'digital-nomad', 'bon-vivant', 'stratege']
+    const counts = await Promise.all(ids.map(id => count(id)))
     expect(total).toBe(baseline + game)
-    await expect(page.getByRole('status')).toHaveText(`${Math.round(same / total * 100)} % des Boss ont le même profil que vous.`)
+    expect(counts.reduce((a, b) => a + b, 0)).toBe(total)
+    const percentages = counts.map(value => Math.floor(value / total * 100))
+    const ranked = counts.map((value, index) => ({ index, remainder: value * 100 % total }))
+      .sort((a, b) => b.remainder - a.remainder || a.index - b.index)
+    const remaining = 100 - percentages.reduce((a, b) => a + b, 0)
+    for (let i = 0; i < remaining; i++) percentages[ranked[i].index]++
+    for (let i = 0; i < ids.length; i++) {
+      await expect(page.locator(`[data-profile="${ids[i]}"] strong`)).toHaveText(`${percentages[i]} %`)
+      await expect(page.locator(`[data-profile="${ids[i]}"] [role="progressbar"]`)).toHaveAttribute('aria-valuenow', String(percentages[i]))
+    }
+    await expect(page.locator('.isCurrentProfile')).toHaveAttribute('data-profile', writes[game - 1].profile)
     await expect(page.locator('.destinationStamp')).toHaveClass(/stampIn/)
     await page.locator('.profileStamp').click()
     expect(await count()).toBe(total)

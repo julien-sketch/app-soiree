@@ -26,14 +26,14 @@ Les noms affichés restent inchangés. Les identifiants enregistrés sont :
 `commandant`, `explorateur`, `jet-setter`, `digital-nomad`, `bon-vivant`, `stratege`.
 La destination conserve son nom existant, par exemple `RIO`.
 
-### Étape restante sur la base
+### Policies de la base
 
-Le test réel du 16 septembre 2026 a rencontré l'erreur RLS `42501` :
-`new row violates row-level security policy for table "quiz_results"`.
-Le compte anonyme renvoie zéro ligne visible, ce qui ne prouve pas que la table
-est vide : une policy SELECT peut masquer les lignes.
+La connexion et les policies fonctionnent : le test réel du 18 septembre 2026 a
+validé deux participations, exactement deux nouvelles lignes et les six parts
+affichées à partir des comptes Supabase. Aucune modification des policies n'est
+nécessaire pour la répartition complète.
 
-Exécuter `supabase/quiz_results_policies.sql` dans le SQL Editor du projet.
+Pour configurer une autre base, utiliser `supabase/quiz_results_policies.sql` dans le SQL Editor.
 Ce script autorise INSERT pour les six identifiants et SELECT pour les comptes.
 Il conserve les autres policies : vérifier les éventuelles policies RESTRICTIVE
 et contraintes CHECK qui limiteraient les valeurs aux anciens noms affichés.
@@ -64,13 +64,22 @@ La dernière réponse déclenche une seule soumission par partie. Une référenc
 promesse partagée empêchent doubles clics, animations et re-renders de la répéter.
 Recommencer réinitialise la protection ; recharger la page retourne à l'accueil.
 
-Après insertion, deux requêtes HEAD avec `count: 'exact'` récupèrent le total et le
-compte du profil sans télécharger les lignes. Le pourcentage est calculé avec
-`Math.round(sameProfile / totalResults * 100)`, nouvelle participation incluse.
-Ces lectures sont séparées : des participations simultanées peuvent arriver entre
-les comptes ; elles ne forment pas un snapshot transactionnel.
+Après insertion, sept requêtes HEAD avec `count: 'exact'` récupèrent le total et les
+comptes des six profils sans télécharger les lignes. Chaque part est calculée à
+partir de `count / total * 100`, nouvelle participation incluse. La méthode du plus
+grand reste attribue les points manquants après arrondi inférieur aux plus grandes
+fractions ; les égalités sont départagées par l'ordre fixe des profils. La somme
+affichée vaut exactement 100 %, y compris quand certains profils ont zéro résultat.
+Le profil du participant porte la mention « Votre profil » et chaque barre utilise
+exactement le pourcentage entier affiché.
 
-La comparaison affiche le chargement puis le pourcentage. En cas d'erreur, elle
+Les lectures ne forment pas un snapshot transactionnel. Si leur somme ne correspond
+pas au total, elles sont relancées une fois, sans nouvelle insertion. Si les comptes
+restent incohérents, la répartition est masquée plutôt que de montrer des chiffres
+erronés. Deux colonnes compactes sont utilisées sur grand écran, avec défilement
+vertical de la page droite si nécessaire sur les tailles plus petites.
+
+La comparaison affiche « Calcul des profils des Boss... » puis les six profils. En cas d'erreur, elle
 disparaît, l'erreur est loguée et le résultat ainsi que les animations restent
 disponibles. Une insertion dont la réponse est perdue n'est jamais retentée, pour
 éviter un doublon : la protection garantit une seule tentative par partie dans

@@ -3034,24 +3034,93 @@ body {
   font-family: 'Courier New', monospace;
 }
 
+.resultRight {
+  padding-top: clamp(6px, 1vw, 16px);
+}
+
 .resultRight .destinationStamp {
-  width: min(76%, 400px);
+  width: min(38%, 180px);
   aspect-ratio: auto;
   color: #315b7d;
 }
+.resultRight .destinationStamp strong {
+  font-size: clamp(13px, 1.2vw, 20px);
+}
+.resultRight .destinationStamp :is(span, small, em) {
+  font-size: clamp(6px, .45vw, 8px);
+}
 
 .profileComparison {
-  min-height: 2.8em;
-  max-width: 430px;
-  margin: 0 auto clamp(10px, 1vw, 16px);
+  max-width: 460px;
+  margin: 0 auto clamp(16px, 1.4vw, 24px);
   color: #315b7d;
-  font: 700 clamp(10px, .85vw, 14px) / 1.4 'Courier New', monospace;
+  font: 700 clamp(10px, .75vw, 12px) / 1.25 'Courier New', monospace;
   text-align: center;
 }
 
+.profileComparison:empty { display: none; }
+
+.profileComparison h2 {
+  margin: 0 0 7px;
+  font: inherit;
+  letter-spacing: .12em;
+  text-align: center;
+}
+
+.profileDistribution { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; list-style: none; margin: 0; padding: 0; }
+.distributionLabel { display: flex; flex-direction: column; gap: 3px; align-items: center; }
+.distributionLabel > span { min-height: 2.5em; }
+.distributionLabel small { display: block; font: inherit; font-size: .85em; text-transform: uppercase; }
 .profileComparison strong {
-  font-size: 1.3em;
+  font-size: clamp(23px, 2.1vw, 34px);
+  line-height: 1;
   white-space: nowrap;
+}
+.distributionTrack { height: 4px; margin-top: 2px; border-bottom: 1px solid currentColor; background: rgb(49 91 125 / 8%); }
+.distributionTrack > span { display: block; height: 100%; background: currentColor; opacity: .75; }
+.isCurrentProfile { color: #9a3e35; }
+
+/* Fit the printed register on the page without an inner scroll area. */
+.resultRight:has(.profileDistribution) .destinationStamp { flex-shrink: 0; }
+.resultRight:has(.profileDistribution) .destinationDetails {
+  position: relative;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  width: 84%;
+  flex-shrink: 0;
+  align-self: center;
+  margin-top: 0;
+  padding-top: 4px;
+  padding-bottom: 0;
+}
+.resultRight .destinationDetails .secondary { display: block; margin: 0 auto; }
+
+@media (min-width: 761px) and (max-width: 1150px) {
+  .resultRight { padding-top: 0; }
+  .resultRight .destinationStamp { width: 110px; margin-right: 12px; }
+  .resultRight .destinationStamp strong { font-size: 12px; }
+  .resultRight .destinationStamp :is(span, small, em) { font-size: 6px; }
+  .resultRight:has(.profileDistribution) .destinationDetails { width: 100%; padding-top: 0; }
+  .resultRight .destinationDetails p { margin: 10px auto 8px; font-size: 11px; line-height: 1.25; }
+  .profileComparison { margin-bottom: 8px; font-size: 9px; }
+  .resultRight .profileDistribution { gap: 4px 12px; }
+  .distributionLabel { gap: 1px; }
+  .resultRight .destinationDetails .secondary { min-height: 40px; padding: 10px 12px; font-size: 10px; }
+}
+
+@media (min-width: 761px) and (max-width: 900px) {
+  .resultRight .destinationStamp { width: 90px; }
+  .resultRight .destinationStamp strong { font-size: 10px; margin-bottom: 8%; }
+  .resultRight .destinationStamp em { margin-top: 2px; }
+  .resultRight .destinationDetails p { margin: 9px auto 6px; }
+  .resultRight .distributionLabel > span { min-height: 2.2em; }
+  .resultRight .profileDistribution { gap: 2px 10px; }
+}
+
+@media (max-height: 820px) {
+  .profileDistribution { gap: 7px 16px; }
+  .profileComparison h2 { margin-bottom: 5px; }
 }
 
 .introText {

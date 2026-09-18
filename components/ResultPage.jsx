@@ -35,8 +35,23 @@ export function ResultRight({ destination, stampStage, onReset, comparison }) {
       <div className={`destinationDetails ${stampStage > 1 ? 'show' : ''}`}>
         <p>{destination.description}</p>
         <div className="profileComparison" role="status" aria-live="polite" aria-atomic="true">
-          {comparison?.status === 'loading' && <span>Comparaison avec les autres Boss...</span>}
-          {comparison?.status === 'ready' && <span><strong>{comparison.percentage} %</strong> des Boss ont le même profil que vous.</span>}
+          {comparison?.status === 'loading' && <span>Calcul des profils des Boss...</span>}
+          {comparison?.status === 'ready' && <>
+            <h2>LES PROFILS DES BOSS</h2>
+            <ol className="profileDistribution">
+              {comparison.distribution.map(({ id, name, percentage }) => (
+                <li key={id} data-profile={id} className={id === comparison.currentProfile ? 'isCurrentProfile' : ''}>
+                  <div className="distributionLabel">
+                    <span>{name}{id === comparison.currentProfile && <small>Votre profil</small>}</span>
+                    <strong>{percentage} %</strong>
+                  </div>
+                  <div className="distributionTrack" role="progressbar" aria-label={name} aria-valuemin={0} aria-valuemax={100} aria-valuenow={percentage}>
+                    <span style={{ width: `${percentage}%` }} />
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </>}
         </div>
         <button className="secondary" onClick={onReset}>FAIS TESTER UN AUTRE BOSS <span>→</span></button>
       </div>
